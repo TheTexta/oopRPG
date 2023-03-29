@@ -173,9 +173,9 @@ public class Main {
 					if (choice == 1) {
 						locationArray[position].listAttackables();
 						PrintMethods.delayPrint("\n0. Back\n");
-						choice = validChoice(0, locationArray[position].getAttackables().size());
-						if (0 < choice && choice <= locationArray[position].getAttackables().size()) {
-							player.attack(locationArray[position].getAttackables().get(choice - 1));
+						choice = validChoice(0, locationArray[position].getAttackables(true).size());
+						if (0 < choice && choice <= locationArray[position].getAttackables(true).size()) {
+							player.attack(locationArray[position].getAttackables(true).get(choice - 1));
 							actions = actions - (1 * player.actionMultiplier());
 						} else if (choice == 0) {
 
@@ -230,7 +230,7 @@ public class Main {
 						 * Iterate through every possible lootable inv in the location and add the list
 						 * to the possibleLoots String
 						 */
-						
+
 						// TODO switch this getattackables to get lootables. Attackables will be dead
 						for (int i = 0; i < (locationArray[position].getAttackables(false).size()); i++) {
 							possibleLoots += (i + 2) + locationArray[position].getAttackables(false).get(i).getName();
@@ -260,8 +260,11 @@ public class Main {
 										actions = actions - (1 * player.actionMultiplier());
 									}
 								}
-							} else if (choice!=0) {
-								PrintMethods.delayPrint("You rumage around "+locationArray[position].getAttacacket(choice-2).getName());
+							} else if (choice != 0) {
+								PrintMethods.delayPrint("You rumage around "
+										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
+										+ "s pockets and find ");
+										PrintMethods.printArray(locationArray[position].getAttackables(false).get(choice - 2).inventory, );
 							}
 
 							if (choice == 0) {
@@ -285,10 +288,10 @@ public class Main {
 					/*
 					 * Iterates through all attackers on scene and has them do damage accordingly
 					 */
-					if (locationArray[position].getAttackables().size() > 0) {
+					if (locationArray[position].getAttackables(true).size() > 0) {
 
-						for (int i = 0; i < locationArray[position].getAttackables().size(); i++) {
-							locationArray[position].getAttackables().get(i).attack(player);
+						for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
+							locationArray[position].getAttackables(true).get(i).attack(player);
 						}
 					}
 
