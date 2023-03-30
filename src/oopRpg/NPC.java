@@ -5,12 +5,12 @@ public class NPC extends Character{
 
 	public NPC(String name) {
 		super();
-		this.health=1;
-		this.isKillable=false;
-		this.name=name;
+		this.setHealth(1);
+		this.setIsKillable(false);
+		this.setName(name);
 	}
 
 	String talk(String msg) {
-		return this.name + ": " + msg;
+		return this.getName() + ": " + msg;
 	}
 }

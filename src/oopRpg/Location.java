@@ -203,7 +203,7 @@ public class Location {
 		String[][] toPrint = new String[getAttackables(true).size()][1];
 
 		for (int i = 0; i < attackers.size(); i++) {
-			toPrint[i][0] = (i + 1) + ". " + attackers.get(i).getName() + " - " + attackers.get(i).health + "hp";
+			toPrint[i][0] = (i + 1) + ". " + attackers.get(i).getName() + " - " + attackers.get(i).getHealth() + "hp";
 		}
 
 		// TODO ask if 84 needs to be a variable

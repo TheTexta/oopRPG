@@ -9,26 +9,25 @@ public class Enemy extends Character implements Killable {
 	protected boolean knowsPlayer;
 
 	public Enemy(int health, String name, boolean isKillable, ArrayList<Item> inventory, Equip weapon) {
-		this.health = health;
-		this.name = name;
-		this.isKillable = isKillable;
-		this.inventory = inventory;
+		this.setHealth(health);
+		this.setName(name);
+		this.setIsKillable(isKillable);
+		this.setInventory(inventory);
 		this.weapon=weapon;
-		// TODO Auto-generated constructor stub
 	}
 
 	String yell(String msg) {
-		return (this.name + " yells: " + msg);
+		return (this.getName() + " yells: " + msg);
 	}
 
 	public void attack(Character attacked) {
-		attacked.health -=  (int)(Math.random() * (this.weapon.getDamage() * 0.5)) + this.weapon.getDamage();
+		attacked.setHealth(attacked.getHealth() -  (int)(Math.random() * (this.weapon.getDamage() * 0.5)) + this.weapon.getDamage());
 		// TODO ask about whether this counts as a repeating method
 	}
 
 	@Override
 	public void die() {
-		this.health = 0;
+		this.setHealth(0);
 
 	}
 }

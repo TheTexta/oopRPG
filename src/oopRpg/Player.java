@@ -8,9 +8,9 @@ public class Player extends Character implements Killable {
 	protected Equip weapon;
 
 	public Player(String name, Equip weapon) {
-		this.health = 100;
-		this.isKillable = true;
-		this.name = name;
+		this.setHealth(100);
+		this.setIsKillable(true);
+		this.setName(name);
 		this.experience = 0;
 		this.wantedLvl = 0;
 		this.weapon = weapon;
@@ -18,7 +18,7 @@ public class Player extends Character implements Killable {
 
 	public void loot(Enemy looted) {
 		if (looted.isDead()) {
-			this.inventory.addAll(looted.inventory);
+			this.addAllToInventory(looted.getInventory());
 		} else
 			throw new java.lang.RuntimeException("Player tried to loot an alived enemy!");
 	}

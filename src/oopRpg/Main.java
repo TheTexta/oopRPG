@@ -233,11 +233,12 @@ public class Main {
 
 						// TODO switch this getattackables to get lootables. Attackables will be dead
 						for (int i = 0; i < (locationArray[position].getAttackables(false).size()); i++) {
-							possibleLoots += (i + 2) + locationArray[position].getAttackables(false).get(i).getName();
+							possibleLoots += (i + 2) +". "+ locationArray[position].getAttackables(false).get(i).getName();
 						}
-
+						
 						while (!finishLoot) {
 							PrintMethods.delayPrintln(possibleLoots);
+							PrintMethods.delayPrint("\n0. Back\n");
 							choice = validChoice(0, locationArray[position].getAttackables(false).size() + 1);
 							if (choice == 1) {
 								PrintMethods.delayPrintln("What would you like to pickup in the "
@@ -264,7 +265,7 @@ public class Main {
 								PrintMethods.delayPrint("You rumage around "
 										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
 										+ "s pockets and find:\n");
-										PrintMethods.printArrayList(locationArray[position].getAttackables(false).get(choice - 2).inventory);
+										PrintMethods.printArrayList(locationArray[position].getAttackables(false).get(choice - 2).getInventory());
 							}
 
 							if (choice == 0) {
