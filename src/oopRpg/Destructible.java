@@ -1,7 +1,7 @@
 package oopRpg;
 
 public class Destructible extends Item {
-	int durability;
+	private int durability;
 
 	public Destructible(String name, int durability) {
 		super(name);

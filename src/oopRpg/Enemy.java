@@ -4,16 +4,14 @@ import java.util.ArrayList;
 
 public class Enemy extends Character implements Killable {
 
-	protected Equip weapon;
+	private Equip weapon;
 
-	protected boolean knowsPlayer;
+	private boolean knowsPlayer;
 
 	public Enemy(int health, String name, boolean isKillable, ArrayList<Item> inventory, Equip weapon) {
-		this.setHealth(health);
-		this.setName(name);
-		this.setIsKillable(isKillable);
+		super(name, isKillable);
 		this.setInventory(inventory);
-		this.weapon=weapon;
+		this.weapon = weapon;
 	}
 
 	String yell(String msg) {
@@ -21,7 +19,8 @@ public class Enemy extends Character implements Killable {
 	}
 
 	public void attack(Character attacked) {
-		attacked.setHealth(attacked.getHealth() -  (int)(Math.random() * (this.weapon.getDamage() * 0.5)) + this.weapon.getDamage());
+		attacked.setHealth(attacked.getHealth() - (int) (Math.random() * (this.weapon.getDamage() * 0.5))
+				+ this.weapon.getDamage());
 		// TODO ask about whether this counts as a repeating method
 	}
 

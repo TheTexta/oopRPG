@@ -62,4 +62,15 @@ abstract class Character {
 		this.inventory.addAll(inventory);
 	}
 
+	// Takes an item and adds it to inventory
+	public void addItem(Item item) {
+		this.inventory.add(item);
+	}
+
+	// Takes an item and subtracts it from inventory and trims arraylist
+	public void subtractItem(Item item) {
+		this.inventory.remove(item);
+		this.inventory.trimToSize();
+	}
+
 }
