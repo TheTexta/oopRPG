@@ -263,8 +263,8 @@ public class Main {
 							} else if (choice != 0) {
 								PrintMethods.delayPrint("You rumage around "
 										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
-										+ "s pockets and find ");
-										PrintMethods.printArray(locationArray[position].getAttackables(false).get(choice - 2).inventory, );
+										+ "s pockets and find:\n");
+										PrintMethods.printArrayList(locationArray[position].getAttackables(false).get(choice - 2).inventory);
 							}
 
 							if (choice == 0) {
