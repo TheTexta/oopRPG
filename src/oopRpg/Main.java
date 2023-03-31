@@ -74,12 +74,15 @@ public class Main {
 		};
 
 		// TODO simplify inv declaration. homeInv is not necessary
-		Location home = new Location("Home", homeInv, 5);
+
+		Location home = new Location("Home", homeInv, 5, "You walk downstairs and grab your keys as you head to your car");
 		home.addCharacter(testBadGuy);
 
-		Location car = new Location("Car", 3);
-		Location outpost = new Location("Outpost", 8);
-		Location border = new Location("Border", 5);
+		Location car = new Location("Car", 3, "You get into your car");
+		Location outpost = new Location("Outpost", 8, "Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
+
+		// TODO add some kind of challenge to complete when you enter the outpost. either complete a hit or kill the cops. if cops are killed your wanted lvl goes up. increasing chance of being recognised at the border
+		Location border = new Location("Border", 5, "The blazing artificial lights shine you down as you approach the border\n");
 
 		Location[] locationArray = { home, car, outpost, border };
 
@@ -89,6 +92,8 @@ public class Main {
 		 * player is in through the use of the locationArray
 		 */
 
+		 // TODO add a random event like a civilian seeing you and reporting you if you dont shoot them
+		 // TODO potentiall add a talk method to negotiate out of dangerous situations
 		while (true) {
 
 			PrintMethods.printLoading();
@@ -112,9 +117,6 @@ public class Main {
 				tutorial = false;
 			}
 			System.out.println();
-
-			// TODO rework the location intro to play every time
-
 			while (!gameOver) {
 				int choice = -1;
 				boolean move = false;

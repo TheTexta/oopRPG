@@ -3,7 +3,11 @@ package oopRpg;
 import java.util.ArrayList;
 
 abstract class Character {
-
+	/*
+	 * Abstract character class is a base for all characters in the game. Every
+	 * character has a name, health, inventory and a isKillable bool to give
+	 * immunity to certain npcs
+	 */
 	private int health;
 	private String name;
 	private boolean isKillable;
@@ -15,8 +19,6 @@ abstract class Character {
 		this.isKillable = isKillable;
 		this.inventory = new ArrayList<>();
 	}
-
-	// TODO ask if above should be static, private, or public.
 
 	boolean isDead() {
 		if (health == 0)

@@ -19,32 +19,37 @@ public class Location {
 										// can only be searched once
 	private ArrayList<Character> characters = new ArrayList<>(); // An ArrayList to hold all the characters a player
 																	// could interact with in the location
+	private String enterMsg;
 
 	public Location(String name, ArrayList<Item> inventory, int actions, ArrayList<Character> characters,
-			ArrayList<Item> hiddenInventory) {
+			ArrayList<Item> hiddenInventory, String enterMsg) {
 		this.name = name;
 		this.inventory = inventory;
 		this.hiddenInventory = hiddenInventory;
 		this.actions = actions;
 		this.characters = characters;
+		this.enterMsg = enterMsg;
 	}
 
-	public Location(String name, ArrayList<Item> inventory, int actions, ArrayList<Character> characters) {
+	public Location(String name, ArrayList<Item> inventory, int actions, ArrayList<Character> characters, String enterMsg) {
 		this.name = name;
 		this.inventory = inventory;
 		this.actions = actions;
 		this.characters = characters;
+		this.enterMsg = enterMsg;
 	}
 
-	public Location(String name, ArrayList<Item> inventory, int actions) {
+	public Location(String name, ArrayList<Item> inventory, int actions, String enterMsg) {
 		this.name = name;
 		this.inventory = inventory;
 		this.actions = actions;
+		this.enterMsg = enterMsg;
 	}
 
-	public Location(String name, int actions) {
+	public Location(String name, int actions, String enterMsg) {
 		this.name = name;
 		this.actions = actions;
+		this.enterMsg = enterMsg;
 	}
 
 	/*
@@ -123,7 +128,7 @@ public class Location {
 	 * location.
 	 */
 	void introduceLocation() throws InterruptedException {
-		PrintMethods.delayPrintln("You entered: " + this.getName());
+		PrintMethods.delayPrintln(this.getName() + ":\n" + this.enterMsg);
 		System.out.println(this.listItems());
 
 	}

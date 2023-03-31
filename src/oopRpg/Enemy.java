@@ -6,6 +6,7 @@ public class Enemy extends Character implements Killable {
 
 	private Equip weapon;
 
+	// TODO decide whether to keep this bool.
 	private boolean knowsPlayer;
 
 	public Enemy(int health, String name, boolean isKillable, ArrayList<Item> inventory, Equip weapon) {
@@ -21,7 +22,7 @@ public class Enemy extends Character implements Killable {
 	public void attack(Character attacked) {
 		attacked.setHealth(attacked.getHealth() - (int) (Math.random() * (this.weapon.getDamage() * 0.5))
 				+ this.weapon.getDamage());
-		// TODO ask about whether this counts as a repeating method
+		// TODO ask about whether this counts as a repeating method because it appears in the player and enemy class
 	}
 
 	@Override
