@@ -143,14 +143,17 @@ public class Location {
 	 * based upon whether or not the location has attackable characters or is
 	 * searched.
 	 */
-	public void listNextAction() throws InterruptedException {
-		String toPrint[][] = { { "------", "2. Move", "3. Inventory", "4. Grab", "------" } };
+	public void listNextAction(boolean inBetweenLoc) throws InterruptedException {
+		String toPrint[][] = { { "------", "------", "3. Inventory", "4. Grab", "------" } };
 
 		if (hasAttackables()) {
 			toPrint[0][0] = "1. Fight";
 		}
 		if (!this.isSearched) {
 			toPrint[0][4] = "5. Search";
+		}
+		if (!inBetweenLoc){
+			toPrint[0][1] = "2. Move";
 		}
 		PrintMethods.printArray(toPrint, 16);
 

@@ -75,14 +75,19 @@ public class Main {
 
 		// TODO simplify inv declaration. homeInv is not necessary
 
-		Location home = new Location("Home", homeInv, 5, "You walk downstairs and grab your keys as you head to your car");
+		Location home = new Location("Home", homeInv, 5,
+				"You walk downstairs and grab your keys as you head to your car");
 		home.addCharacter(testBadGuy);
 
 		Location car = new Location("Car", 3, "You get into your car");
-		Location outpost = new Location("Outpost", 8, "Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
+		Location outpost = new Location("Outpost", 8,
+				"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
 
-		// TODO add some kind of challenge to complete when you enter the outpost. either complete a hit or kill the cops. if cops are killed your wanted lvl goes up. increasing chance of being recognised at the border
-		Location border = new Location("Border", 5, "The blazing artificial lights shine you down as you approach the border\n");
+		// TODO add some kind of challenge to complete when you enter the outpost.
+		// either complete a hit or kill the cops. if cops are killed your wanted lvl
+		// goes up. increasing chance of being recognised at the border
+		Location border = new Location("Border", 5,
+				"The blazing artificial lights shine you down as you approach the border\n");
 
 		Location[] locationArray = { home, car, outpost, border };
 
@@ -92,8 +97,11 @@ public class Main {
 		 * player is in through the use of the locationArray
 		 */
 
-		 // TODO add a random event like a civilian seeing you and reporting you if you dont shoot them
-		 // TODO potentiall add a talk method to negotiate out of dangerous situations
+		// TODO add a random event like a civilian seeing you and reporting you if you
+		// dont shoot them
+		// TODO potential add a talk method to negotiate out of dangerous situations
+
+		boolean isInTempLocation = false;
 		while (true) {
 
 			PrintMethods.printLoading();
@@ -137,21 +145,18 @@ public class Main {
 
 					locationArray[position].introduceLocation();
 
-					locationArray[position].listNextAction();
+					locationArray[position].listNextAction(isInTempLocation);
 
 					boolean validChoice = false;
 					while (!validChoice) {
 						System.out.print("Your Choice: ");
 						// TODO make 5 and invalid choice
 						choice = in.nextInt();
-						if (choice == 2 || choice == 3 || choice == 4 || choice == 5
+						if ((choice == 2 && !isInTempLocation) || choice == 3 || choice == 4 || choice == 5
 								|| (choice == 1 && locationArray[position].hasAttackables())) {
 							validChoice = true;
 						} else {
-							if (locationArray[position].hasAttackables())
-								PrintMethods.invalidChoice("any number between (1 - 5)");
-							else
-								PrintMethods.invalidChoice("any number between (2 - 5)");
+							PrintMethods.invalidChoice("any number from options above");
 						}
 					}
 
@@ -189,6 +194,11 @@ public class Main {
 						actions = actions - (1 * player.actionMultiplier());
 						if (position >= locationArray.length) {
 							gameOver = true;
+						} else {
+							// Do location progression checks
+							if (locationArray[position].equals(outpost)) {
+								
+							}
 						}
 
 					}
@@ -235,9 +245,10 @@ public class Main {
 
 						// TODO switch this getattackables to get lootables. Attackables will be dead
 						for (int i = 0; i < (locationArray[position].getAttackables(false).size()); i++) {
-							possibleLoots += (i + 2) +". "+ locationArray[position].getAttackables(false).get(i).getName();
+							possibleLoots += (i + 2) + ". "
+									+ locationArray[position].getAttackables(false).get(i).getName();
 						}
-						
+
 						while (!finishLoot) {
 							PrintMethods.delayPrintln(possibleLoots);
 							PrintMethods.delayPrint("\n0. Back\n");
@@ -267,7 +278,8 @@ public class Main {
 								PrintMethods.delayPrint("You rumage around "
 										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
 										+ "s pockets and find:\n");
-										PrintMethods.printArrayList(locationArray[position].getAttackables(false).get(choice - 2).getInventory());
+								PrintMethods.printArrayList(
+										locationArray[position].getAttackables(false).get(choice - 2).getInventory());
 							}
 
 							if (choice == 0) {
