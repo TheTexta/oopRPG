@@ -197,7 +197,11 @@ public class Main {
 						} else {
 							// Do location progression checks
 							if (locationArray[position].equals(outpost)) {
-								
+								// Print Banner
+								PrintMethods.printArray(toPrint, 16);
+								PrintMethods.delayPrint(
+										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'");
+
 							}
 						}
 
