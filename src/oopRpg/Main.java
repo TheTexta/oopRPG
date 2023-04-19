@@ -63,6 +63,7 @@ public class Main {
 		Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true, swatKit,
 				mp5);
 		Criminal testBadGuy = new Criminal(50, "Gabe", true, swatKit, shank);
+		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], gameOver, swatKit, kevlar)
 
 		// Room Inventories
 		ArrayList<Item> homeInv = new ArrayList<>() {
@@ -80,8 +81,14 @@ public class Main {
 		home.addCharacter(testBadGuy);
 
 		Location car = new Location("Car", 3, "You get into your car");
-		Location outpost = new Location("Outpost", 8,
+		Location outpost = new Location("Outpost", 1,
 				"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
+
+		// outpost subLocations
+
+		Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
+		Location outpostAcceptChal = new Location("Outpost", 5,
+				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you with no choice but to abide.");
 
 		// TODO add some kind of challenge to complete when you enter the outpost.
 		// either complete a hit or kill the cops. if cops are killed your wanted lvl
@@ -101,7 +108,7 @@ public class Main {
 		// dont shoot them
 		// TODO potential add a talk method to negotiate out of dangerous situations
 
-		boolean isInTempLocation = false;
+		boolean movementLocked = false;
 		while (true) {
 
 			PrintMethods.printLoading();
@@ -145,14 +152,21 @@ public class Main {
 
 					locationArray[position].introduceLocation();
 
-					locationArray[position].listNextAction(isInTempLocation);
+					locationArray[position].listNextAction(movementLocked);
+
+					if (movementLocked){
+						if (locationArray[position].getNumOfAttackers()>=1) {
+							movementLocked = false;
+						}
+					}
 
 					boolean validChoice = false;
+
 					while (!validChoice) {
 						System.out.print("Your Choice: ");
 						// TODO make 5 and invalid choice
 						choice = in.nextInt();
-						if ((choice == 2 && !isInTempLocation) || choice == 3 || choice == 4 || choice == 5
+						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || choice == 5
 								|| (choice == 1 && locationArray[position].hasAttackables())) {
 							validChoice = true;
 						} else {
@@ -199,8 +213,15 @@ public class Main {
 							if (locationArray[position].equals(outpost)) {
 								// Print Banner
 								PrintMethods.printArray(toPrint, 16);
+								PrintMethods.printLoading();
 								PrintMethods.delayPrint(
-										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'");
+										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\n");
+								if (validChoice("y", "n").equals("y")) {
+									locationArray[position] = outpostAcceptChal;
+								} else {
+									locationArray[position] = outpostAcceptChal;
+								}
+								;
 
 							}
 						}
