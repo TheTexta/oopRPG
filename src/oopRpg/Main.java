@@ -8,7 +8,7 @@ public class Main {
 	/*
 	 * every location has a set number of actions that it adds to your total actions
 	 * actions are the number of turns you have before the police find you. similar
-	 * to FTL
+	 * to FTL (a steam game)
 	 * 
 	 * Every location has a custom welcome message that relates to the items in the
 	 * inv of the location when you select Grab you get to choose from a list of
@@ -45,6 +45,12 @@ public class Main {
 			}
 		};
 
+		ArrayList<Item> gangKit = new ArrayList<>() {
+			{
+				add(shank);
+			}
+		};
+
 		System.out.print("Enter your characters name: ");
 
 		// TODO make it impossible to enter no name
@@ -63,7 +69,8 @@ public class Main {
 		Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true, swatKit,
 				mp5);
 		Criminal testBadGuy = new Criminal(50, "Gabe", true, swatKit, shank);
-		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], gameOver, swatKit, kevlar)
+		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
+				g19);
 
 		// Room Inventories
 		ArrayList<Item> homeInv = new ArrayList<>() {
@@ -87,9 +94,9 @@ public class Main {
 		// outpost subLocations
 
 		Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
-		Location outpostAcceptChal = new Location("Outpost", 5,
+		Location outpostAcceptChal = new Location("Alleyway", 5,
 				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you with no choice but to abide.");
-
+		outpostAcceptChal.addCharacter(op);
 		// TODO add some kind of challenge to complete when you enter the outpost.
 		// either complete a hit or kill the cops. if cops are killed your wanted lvl
 		// goes up. increasing chance of being recognised at the border
@@ -154,8 +161,8 @@ public class Main {
 
 					locationArray[position].listNextAction(movementLocked);
 
-					if (movementLocked){
-						if (locationArray[position].getNumOfAttackers()>=1) {
+					if (movementLocked) {
+						if (locationArray[position].getNumOfAttackers() >= 1) {
 							movementLocked = false;
 						}
 					}
@@ -211,15 +218,17 @@ public class Main {
 						} else {
 							// Do location progression checks
 							if (locationArray[position].equals(outpost)) {
+								// Lock player moverment so they cant move away from the fight
+								movementLocked = true;
 								// Print Banner
 								PrintMethods.printArray(toPrint, 16);
 								PrintMethods.printLoading();
 								PrintMethods.delayPrint(
-										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\n");
+										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\nDo you accept the challange (y or n): ");
 								if (validChoice("y", "n").equals("y")) {
 									locationArray[position] = outpostAcceptChal;
 								} else {
-									locationArray[position] = outpostAcceptChal;
+									locationArray[position] = outpostDeclineChal;
 								}
 								;
 
