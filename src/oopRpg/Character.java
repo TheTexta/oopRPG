@@ -19,6 +19,12 @@ abstract class Character {
 		this.isKillable = isKillable;
 		this.inventory = new ArrayList<>();
 	}
+	public Character (String name, boolean isKillable, int health){
+		this.health = health;
+		this.name = name;
+		this.isKillable = isKillable;
+		this.inventory = new ArrayList<>();
+	}
 
 	boolean isDead() {
 		if (health == 0)
