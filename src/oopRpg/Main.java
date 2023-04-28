@@ -221,7 +221,7 @@ public class Main {
 						move = !move;
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
-						if (position >= locationArray.length) {
+						if (locationArray[position]==endLocation) {
 							// TODO check if gameover needs a rework
 							gameOver = true;
 						} else {
@@ -363,7 +363,7 @@ public class Main {
 			}
 
 			if (locationArray[position] == endLocation) {
-				endGame("You escaped!");
+				endGame("You escaped!\n\n");
 			} else {
 				endGame("You died...");
 			}
