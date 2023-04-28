@@ -8,6 +8,6 @@
 /*module oopRpg {
 
 }*/
-module gui{
-    requires java.desktop;
+module oopRPG_cdbfe62{
+    
 }

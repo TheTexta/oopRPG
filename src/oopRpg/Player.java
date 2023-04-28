@@ -29,7 +29,12 @@ public class Player extends Character implements Killable {
 	public void attack(Character attacked) {
 		attacked.setHealth(attacked.getHealth() - ((int) (Math.random() * (this.weapon.getDamage() * 0.5))
 				+ this.weapon.getDamage()));
-		// TODO ask about whether this counts as a repeating method
+		/*
+		 * Intentionally the same attack method in the enemy and player class.
+		 * I want to have the attacks by any character to work the same way regardless
+		 * of class. The only variable that can change relatiing to the attacking system
+		 * is the health. 
+		 */
 	}
 
 	public ArrayList<Item> listAndGetItems() {

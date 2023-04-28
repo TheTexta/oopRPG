@@ -220,22 +220,6 @@ public class Location {
 	}
 
 	/*
-	 * Returns the number of attackable characters in the location.
-	 */
-	public int getNumOfAttackers() {
-		int numOfAttackers = 0;
-		for (int i = 0; i < this.characters.size(); i++) {
-
-			if (!this.characters.get(i).isDead()
-					&& this.characters.get(i).getClass().getSuperclass().equals(Enemy.class)) {
-				numOfAttackers++;
-			}
-
-		}
-		return numOfAttackers;
-	}
-
-	/*
 	 * This method removes an item from the location inventory and trims the
 	 * subsequent inventory to size to allow for proper calculations when using the
 	 * size() ArrayList method.

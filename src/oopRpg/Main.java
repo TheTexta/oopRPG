@@ -51,12 +51,14 @@ public class Main {
 			}
 		};
 
-		System.out.print("Enter your characters name: ");
+		System.out.print("Enter your characters name (Enter for default name: Alex): ");
 
-		// TODO make it impossible to enter no name
+		String name = in.nextLine();
+		if (name.isEmpty())
+			name = "Alex";
 
 		// Player declaration takes name from the user input.
-		Player player = new Player(in.nextLine(), shank);
+		Player player = new Player(name, shank);
 
 		// Names - possible names of officers
 		String[] names = { "A. Trinidad", "K. Hansen", "J. Briggs", "G. Serna", "S. Bowling", "K. Guest", "V. Montero",
@@ -106,7 +108,10 @@ public class Main {
 		Location border = new Location("Border", 5,
 				"The blazing artificial lights shine you down as you approach the border\n");
 
-		Location[] locationArray = { home, car, outpost, border };
+		// Placeholder location for endgame
+		Location endLocation = new Location("End", 0, "Game Over");
+		
+		Location[] locationArray = { home, car, outpost, border, endLocation};
 
 		int position = 0;
 		/*
@@ -157,7 +162,7 @@ public class Main {
 					String[][] toPrint = { { "HEALTH", "WEAPON", "ATKDMG", "ACTIONS", "ENEMIES" },
 							{ Integer.toString(player.getHealth()), player.getWeapon().getName(),
 									Integer.toString(player.getWeapon().getDamage()), Integer.toString(actions),
-									Integer.toString(locationArray[position].getNumOfAttackers()) } };
+									Integer.toString(locationArray[position].getAttackables(true).size()) } };
 					PrintMethods.printArray(toPrint, 16);
 
 					locationArray[position].introduceLocation();
@@ -165,7 +170,7 @@ public class Main {
 					locationArray[position].listNextAction(movementLocked);
 
 					if (movementLocked) {
-						if (locationArray[position].getNumOfAttackers() >= 1) {
+						if (locationArray[position].getAttackables(true).size() >= 1) {
 							movementLocked = false;
 						}
 					}
@@ -217,6 +222,7 @@ public class Main {
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
 						if (position >= locationArray.length) {
+							// TODO check if gameover needs a rework
 							gameOver = true;
 						} else {
 							// Do location progression checks
@@ -273,15 +279,13 @@ public class Main {
 						// String to hold all
 						String possibleLoots = "Search the:\n1. " + locationArray[position].getName() + "\n";
 
-						// TODO ask if i should make the attackables size a local var
-
 						/*
-						 * Iterate through every possible lootable inv in the location and add the list
+						 * The following for loop iterates through every possible lootable inv in the
+						 * location and add the list
 						 * to the possibleLoots String
 						 */
-
 						// TODO switch this getattackables to get lootables. Attackables will be dead
-						for (int i = 0; i < (locationArray[position].getAttackables(false).size()); i++) {
+						for (int i = 0; i < locationArray[position].getAttackables(false).size(); i++) {
 							possibleLoots += (i + 2) + ". "
 									+ locationArray[position].getAttackables(false).get(i).getName();
 						}
@@ -358,7 +362,7 @@ public class Main {
 				}
 			}
 
-			if (position >= locationArray.length) {
+			if (locationArray[position] == endLocation) {
 				endGame("You escaped!");
 			} else {
 				endGame("You died...");
