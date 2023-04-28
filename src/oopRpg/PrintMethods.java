@@ -102,7 +102,7 @@ public final class PrintMethods {
 	}
 
 	public static void printArrayList(ArrayList<Item> toPrint) throws InterruptedException{
-		String [][] toPrintArray = new String[toPrint.size()-1][1];
+		String [][] toPrintArray = new String[toPrint.size()][1];
 		for (int i =0; i<toPrint.size();i++){
 			toPrintArray[i][0] += toPrint.get(i).getName();
 		}

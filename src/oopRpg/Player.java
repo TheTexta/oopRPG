@@ -26,14 +26,9 @@ public class Player extends Character implements Killable {
 		this.weapon = weapon;
 	}
 
-	@Override
-	public void die() {
-
-	}
-
 	public void attack(Character attacked) {
-		attacked.setHealth(attacked.getHealth() - (int) (Math.random() * (this.weapon.getDamage() * 0.5))
-				+ this.weapon.getDamage());
+		attacked.setHealth(attacked.getHealth() - ((int) (Math.random() * (this.weapon.getDamage() * 0.5))
+				+ this.weapon.getDamage()));
 		// TODO ask about whether this counts as a repeating method
 	}
 

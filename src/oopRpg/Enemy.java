@@ -21,14 +21,24 @@ public class Enemy extends Character implements Killable {
 	}
 
 	public void attack(Character attacked) {
-		attacked.setHealth(attacked.getHealth() - (int) (Math.random() * (this.weapon.getDamage() * 0.5))
-				+ this.weapon.getDamage());
+		attacked.setHealth(attacked.getHealth() - ((int) (Math.random() * (this.weapon.getDamage() * 0.5))
+				+ this.weapon.getDamage()));
 		// TODO ask about whether this counts as a repeating method because it appears in the player and enemy class
 	}
 
-	@Override
-	public void die() {
-		this.setHealth(0);
+	public ArrayList<Item> getInventory(){
+		// Get original inv without weapon item
+		ArrayList <Item> combinedInv = super.getInventory();
+		// Add the weapon item
+		combinedInv.add(weapon);
+		// Return the combined arraylist
+		return combinedInv;
+	}
 
+	public ArrayList<Item> loot(){
+		if (!this.getIsLooted())
+			this.addItem(weapon);
+		
+		return super.loot();
 	}
 }

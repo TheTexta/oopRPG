@@ -18,7 +18,7 @@ public class Main {
 
 	static boolean gameOver = false;
 	/*
-	 * boolean to hold whether the game has ended due to completion / death. Its
+	 * Boolean to hold whether the game has ended due to completion / death. Its
 	 * important that this is a global var as methods outside of main use this to
 	 * restart the game if the player chooses to do so.
 	 */
@@ -82,6 +82,9 @@ public class Main {
 		};
 
 		// TODO simplify inv declaration. homeInv is not necessary
+
+		// Empty Inventory to set to looted characters
+		ArrayList<Item> empty = new ArrayList<>();
 
 		Location home = new Location("Home", homeInv, 5,
 				"You walk downstairs and grab your keys as you head to your car");
@@ -287,6 +290,8 @@ public class Main {
 							PrintMethods.delayPrintln(possibleLoots);
 							PrintMethods.delayPrint("\n0. Back\n");
 							choice = validChoice(0, locationArray[position].getAttackables(false).size() + 1);
+
+							// Choice number 1 will always be the current location
 							if (choice == 1) {
 								PrintMethods.delayPrintln("What would you like to pickup in the "
 										+ locationArray[position].getName() + ":");
@@ -312,8 +317,14 @@ public class Main {
 								PrintMethods.delayPrint("You rumage around "
 										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
 										+ "s pockets and find:\n");
-								PrintMethods.printArrayList(
-										locationArray[position].getAttackables(false).get(choice - 2).getInventory());
+
+								ArrayList<Item> itemsToAdd = locationArray[position].getAttackables(false)
+										.get(choice - 2).loot();
+								// TODO add a exception print for when the inv has already been looted or is
+								// empty
+								PrintMethods.printArrayList(itemsToAdd);
+
+								player.addAllToInventory(itemsToAdd);
 							}
 
 							if (choice == 0) {

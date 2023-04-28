@@ -2,8 +2,12 @@
  * 
  */
 /**
- * @author dexte
+ * @author Dexter
  *
  */
-module oopRpg {
+/*module oopRpg {
+
+}*/
+module gui{
+    requires java.desktop;
 }

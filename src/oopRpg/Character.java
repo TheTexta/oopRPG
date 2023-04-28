@@ -12,18 +12,22 @@ abstract class Character {
 	private String name;
 	private boolean isKillable;
 	private ArrayList<Item> inventory;
+	private boolean isLooted;
 
 	public Character(String name, boolean isKillable) {
 		this.health = 0;
 		this.name = name;
 		this.isKillable = isKillable;
 		this.inventory = new ArrayList<>();
+		this.isLooted = false;
 	}
-	public Character (String name, boolean isKillable, int health){
+
+	public Character(String name, boolean isKillable, int health) {
 		this.health = health;
 		this.name = name;
 		this.isKillable = isKillable;
 		this.inventory = new ArrayList<>();
+		this.isLooted = false;
 	}
 
 	boolean isDead() {
@@ -47,6 +51,9 @@ abstract class Character {
 
 	public void setHealth(int health) {
 		this.health = health;
+		if (this.health <= 0) {
+			this.health = 0;
+		}
 	}
 
 	public void setName(String name) {
@@ -65,9 +72,17 @@ abstract class Character {
 		this.inventory = inventory;
 	}
 
+	public boolean getIsLooted() {
+		return this.isLooted;
+	}
+
 	// Takes an arraylist of items and adds them to inventory
 	public void addAllToInventory(ArrayList<Item> inventory) {
 		this.inventory.addAll(inventory);
+
+		// if the added inventory is null a trim is needed
+		// TODO check if the above is true
+		this.inventory.trimToSize();
 	}
 
 	// Takes an item and adds it to inventory
@@ -79,6 +94,15 @@ abstract class Character {
 	public void subtractItem(Item item) {
 		this.inventory.remove(item);
 		this.inventory.trimToSize();
+	}
+
+	public ArrayList<Item> loot() {
+		if (!isLooted) {
+			isLooted = true;
+			return this.inventory;
+		} else {
+			return (new ArrayList<Item>());
+		}
 	}
 
 }
