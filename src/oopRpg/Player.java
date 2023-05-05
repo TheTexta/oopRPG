@@ -7,6 +7,8 @@ public class Player extends Character implements Killable {
 	private int wantedLvl;
 	// An object representing the player's equipped weapon
 	private Equip weapon;
+	// An object representing the player's armor equipped
+	private Equip armor;
 
 	// Constructor method for the Player class
 	public Player(String name, Equip weapon) {
@@ -33,12 +35,25 @@ public class Player extends Character implements Killable {
 	
 	// Method for the player to change their equipped weapon
 	public void setWeapon(Equip weapon) {
+		if (weapon == null) {
+            throw new IllegalArgumentException("Armor cannot be null!");
+        }
 		// Add the player's current weapon to their inventory
 		this.addItem(this.weapon);
 		// Remove the new weapon from the player's inventory
 		this.subtractItem(weapon);
 		// Set the new weapon as the player's equipped weapon
 		this.weapon = weapon;
+	}
+
+	// Method for the player to set there armor type
+	public void setArmor(Equip armor){
+		if (armor == null) {
+            throw new IllegalArgumentException("Armor cannot be null!");
+        }
+		this.addItem(this.armor);
+		this.subtractItem(armor);
+		this.armor=armor;
 	}
 	
 	// Method for the player to attack another character

@@ -28,14 +28,14 @@ public class Main {
 		Scanner in = new Scanner(System.in);
 
 		// Weapons
-		Equip shank = new Equip("Shank", 25);
-		Equip g19 = new Equip("Glock 19", 50);
-		Equip mp5 = new Equip("MP5", 100);
-		Equip ak = new Equip("AK-47", 200);
+		Equip shank = new Equip("Shank", 25, true);
+		Equip g19 = new Equip("Glock 19", 50, true);
+		Equip mp5 = new Equip("MP5", 100, true);
+		Equip ak = new Equip("AK-47", 200, true);
 
 		// Armour
-		Equip kevlar = new Equip("Kevlar", 25);
-		Equip tie = new Equip("'Gating master' - Special Armored Tie", 100);
+		Equip kevlar = new Equip("Kevlar", 25, false);
+		Equip tie = new Equip("'Gating master' - Special Armored Tie", 100, false);
 
 		// Items
 		Item tape = new Item("Tape");
@@ -113,9 +113,6 @@ public class Main {
 				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you alone with the enemy\n");
 		outpostAcceptChal.addCharacter(op);
 
-		// TODO add some kind of challenge to complete when you enter the outpost.
-		// either complete a hit or kill the cops. if cops are killed your wanted lvl
-		// goes up. increasing chance of being recognised at the border
 		Location border = new Location("Border", 5,
 				"The blazing artificial lights shine you down as you approach the border\n");
 
@@ -187,9 +184,9 @@ public class Main {
 						}
 					}
 
-					//TODO Check for death
-					if (player.isDead()){
-						
+					// TODO Check for death
+					if (player.isDead()) {
+
 					}
 
 					boolean validChoice = false;
@@ -199,7 +196,7 @@ public class Main {
 						// TODO make 5 and invalid choice
 						choice = in.nextInt();
 						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || choice == 5
-								|| (choice == 1 && (locationArray[position].getAttackables(true).size()>0))) {
+								|| (choice == 1 && (locationArray[position].getAttackables(true).size() > 0))) {
 							validChoice = true;
 						} else {
 							PrintMethods.invalidChoice("any number from options above");
@@ -279,7 +276,10 @@ public class Main {
 								int equipOrBack = validChoice(0, 1);
 								if (equipOrBack == 1 && equipUse == "Equip") {
 									// TODO need to account for armor types
-									player.setWeapon((Equip) inventory.get(choice - 1));
+									if (((Equip) inventory.get(choice - 1)).getType())
+										player.setWeapon((Equip) inventory.get(choice - 1));
+									else
+										player.setArmor((Equip) inventory.get(choice - 1));
 								} else if (equipOrBack == 1 && equipUse == "Use") {
 									inventory.get(choice - 1).use();
 								}
@@ -301,9 +301,7 @@ public class Main {
 						 * The following for loop iterates through every possible lootable inv in the
 						 * location and add the list
 						 * to the possibleLoots String
-						 */
-						// TODO switch this getattackables to get lootables. Attackables will be dead
-						for (int i = 0; i < locationArray[position].getAttackables(false).size(); i++) {
+						 */ for (int i = 0; i < locationArray[position].getAttackables(false).size(); i++) {
 							possibleLoots += (i + 2) + ". "
 									+ locationArray[position].getAttackables(false).get(i).getName();
 						}
