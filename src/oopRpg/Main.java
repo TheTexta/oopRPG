@@ -23,7 +23,7 @@ public class Main {
 	 * restart the game if the player chooses to do so.
 	 */
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws Exception {
 		// Scanner object to read inputs
 		Scanner in = new Scanner(System.in);
 
@@ -31,9 +31,11 @@ public class Main {
 		Equip shank = new Equip("Shank", 25);
 		Equip g19 = new Equip("Glock 19", 50);
 		Equip mp5 = new Equip("MP5", 100);
+		Equip ak = new Equip("AK-47", 200);
 
 		// Armour
 		Equip kevlar = new Equip("Kevlar", 25);
+		Equip tie = new Equip("'Gating master' - Special Armored Tie", 100);
 
 		// Items
 		Item tape = new Item("Tape");
@@ -74,6 +76,12 @@ public class Main {
 		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
 				g19);
 
+		Criminal outpostBoss = new Criminal(200, "Kristopher Churchill", true, new ArrayList<>() {
+			{
+				add(tie);
+			}
+		}, ak);
+
 		// Room Inventories
 		ArrayList<Item> homeInv = new ArrayList<>() {
 			{
@@ -97,11 +105,14 @@ public class Main {
 				"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
 
 		// outpost subLocations
-
 		Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
+		// TODO change where characters are added so they can be re initialised if the
+		// player chooses to restart the game.
+		outpostDeclineChal.addCharacter(outpostBoss);
 		Location outpostAcceptChal = new Location("Alleyway", 5,
-				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you with no choice but to abide.");
+				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you alone with the enemy\n");
 		outpostAcceptChal.addCharacter(op);
+
 		// TODO add some kind of challenge to complete when you enter the outpost.
 		// either complete a hit or kill the cops. if cops are killed your wanted lvl
 		// goes up. increasing chance of being recognised at the border
@@ -110,8 +121,8 @@ public class Main {
 
 		// Placeholder location for endgame
 		Location endLocation = new Location("End", 0, "Game Over");
-		
-		Location[] locationArray = { home, car, outpost, border, endLocation};
+
+		Location[] locationArray = { home, car, outpost, border, endLocation };
 
 		int position = 0;
 		/*
@@ -170,9 +181,15 @@ public class Main {
 					locationArray[position].listNextAction(movementLocked);
 
 					if (movementLocked) {
+						// TODO look over this it doesnt look right
 						if (locationArray[position].getAttackables(true).size() >= 1) {
 							movementLocked = false;
 						}
+					}
+
+					//TODO Check for death
+					if (player.isDead()){
+						
 					}
 
 					boolean validChoice = false;
@@ -182,7 +199,7 @@ public class Main {
 						// TODO make 5 and invalid choice
 						choice = in.nextInt();
 						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || choice == 5
-								|| (choice == 1 && locationArray[position].hasAttackables())) {
+								|| (choice == 1 && (locationArray[position].getAttackables(true).size()>0))) {
 							validChoice = true;
 						} else {
 							PrintMethods.invalidChoice("any number from options above");
@@ -221,7 +238,7 @@ public class Main {
 						move = !move;
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
-						if (locationArray[position]==endLocation) {
+						if (locationArray[position] == endLocation) {
 							// TODO check if gameover needs a rework
 							gameOver = true;
 						} else {
@@ -233,7 +250,7 @@ public class Main {
 								PrintMethods.printArray(toPrint, 16);
 								PrintMethods.printLoading();
 								PrintMethods.delayPrint(
-										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\nDo you accept the challange (y or n): ");
+										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\n\nDo you accept the challange (y or n): ");
 								if (validChoice("y", "n").equals("y")) {
 									locationArray[position] = outpostAcceptChal;
 								} else {
@@ -261,6 +278,7 @@ public class Main {
 										inventory.get(choice - 1).getName() + "\n1." + equipUse + "\n0.Back");
 								int equipOrBack = validChoice(0, 1);
 								if (equipOrBack == 1 && equipUse == "Equip") {
+									// TODO need to account for armor types
 									player.setWeapon((Equip) inventory.get(choice - 1));
 								} else if (equipOrBack == 1 && equipUse == "Use") {
 									inventory.get(choice - 1).use();
@@ -324,11 +342,12 @@ public class Main {
 
 								ArrayList<Item> itemsToAdd = locationArray[position].getAttackables(false)
 										.get(choice - 2).loot();
-								// TODO add a exception print for when the inv has already been looted or is
-								// empty
-								PrintMethods.printArrayList(itemsToAdd);
 
 								player.addAllToInventory(itemsToAdd);
+								if (itemsToAdd.size() == 0)
+									itemsToAdd.add(new Item("!!! Character already looted !!!"));
+								PrintMethods.printArrayList(itemsToAdd);
+
 							}
 
 							if (choice == 0) {
@@ -362,6 +381,7 @@ public class Main {
 				}
 			}
 
+			// TODO rework this
 			if (locationArray[position] == endLocation) {
 				endGame("You escaped!\n\n");
 			} else {

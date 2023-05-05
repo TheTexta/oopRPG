@@ -143,10 +143,10 @@ public class Location {
 	 * based upon whether or not the location has attackable characters or is
 	 * searched.
 	 */
-	public void listNextAction(boolean inBetweenLoc) throws InterruptedException {
+	public void listNextAction(boolean inBetweenLoc) throws Exception {
 		String toPrint[][] = { { "------", "------", "3. Inventory", "4. Grab", "------" } };
 
-		if (hasAttackables()) {
+		if (getAttackables(true).size()>0) {
 			toPrint[0][0] = "1. Fight";
 		}
 		if (!this.isSearched) {
@@ -169,6 +169,8 @@ public class Location {
 	 * method tests if the character is dead or not as a dead character cannot be
 	 * further attacked.
 	 */
+
+	 // TODO simplify the following three methods
 	public boolean hasAttackables() {
 		if (this.characters.size() > 0) {
 			for (int i = 0; i < this.characters.size(); i++) {
@@ -182,10 +184,8 @@ public class Location {
 	}
 	/*
 	 * Method returns all characters which the character can kill through an
-	 * ArrayList. Similar to the hasAttackables method
+	 * ArrayList.
 	 */
-	// TODO simplify the getAttackables and hasAttackables methods and
-	// listAttackables.
 
 	public ArrayList<Enemy> getAttackables(boolean alive) {
 		ArrayList<Enemy> attackers = new ArrayList<>();
@@ -205,7 +205,7 @@ public class Location {
 		return attackers;
 	}
 
-	public void listAttackables() throws InterruptedException {
+	public void listAttackables() throws Exception {
 		ArrayList<Enemy> attackers = getAttackables(true);
 
 		String[][] toPrint = new String[getAttackables(true).size()][1];

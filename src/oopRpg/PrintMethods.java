@@ -7,7 +7,7 @@ public final class PrintMethods {
 	public static void printLoading() throws InterruptedException {
 		for (int i = 0; i < 45; i++) {
 			System.out.print(". ");
-			//Thread.sleep(25);
+			// Thread.sleep(25);
 		}
 		System.out.print("\n");
 
@@ -17,7 +17,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			//Thread.sleep(20);
+			// Thread.sleep(20);
 		}
 	}
 
@@ -25,7 +25,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg, int delay) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			//Thread.sleep(delay);
+			// Thread.sleep(delay);
 		}
 	}
 
@@ -85,7 +85,9 @@ public final class PrintMethods {
 		return spaces;
 	}
 
-	public static void printArray(String[][] txt, int padding) throws InterruptedException {
+	public static void printArray(String[][] txt, int padding) throws Exception {
+		if (txt.length == 0)
+			throw new Exception("txt is null");
 		String devider = genString((txt[0].length * padding) + txt[0].length + 1, "-");
 		String toPrint = devider;
 
@@ -101,10 +103,10 @@ public final class PrintMethods {
 		delayPrint(toPrint.split("\n"), 30);
 	}
 
-	public static void printArrayList(ArrayList<Item> toPrint) throws InterruptedException{
-		String [][] toPrintArray = new String[toPrint.size()][1];
-		for (int i =0; i<toPrint.size();i++){
-			toPrintArray[i][0] += toPrint.get(i).getName();
+	public static void printArrayList(ArrayList<Item> toPrint) throws Exception {
+		String[][] toPrintArray = new String[toPrint.size()][1];
+		for (int i = 0; i < toPrint.size(); i++) {
+			toPrintArray[i][0] = toPrint.get(i).getName();
 		}
 
 		printArray(toPrintArray, 84);
