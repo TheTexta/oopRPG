@@ -179,19 +179,18 @@ public class Main {
 						}
 					}
 
-					// TODO Check for death
+					// TODO rework this
 					if (player.isDead()) {
-
+						gameOver=true;
+						endGame("You died....");
 					}
 
 					boolean validChoice = false;
 
 					while (!validChoice) {
 						System.out.print("Your Choice: ");
-						// TODO make 5 and invalid choice
 						choice = in.nextInt();
-						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || choice == 5
-								|| (choice == 1 && (locationArray[position].getAttackables(true).size() > 0))) {
+						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || (choice == 5 && !locationArray[position].getIsLooted()) || (choice == 1 && (locationArray[position].getAttackables(true).size() > 0))) {
 							validChoice = true;
 						} else {
 							PrintMethods.invalidChoice("any number from options above");
@@ -400,6 +399,7 @@ public class Main {
 		int playAgain = in.nextInt();
 		if (playAgain == 1) {
 			gameOver = false;
+			// TODO rework this.
 		} else if (playAgain == 2) {
 			in.close();
 			System.exit(0);

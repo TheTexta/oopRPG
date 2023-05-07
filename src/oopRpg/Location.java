@@ -77,6 +77,10 @@ public class Location {
 		return "You find " + addedItems + "!";
 	}
 
+	boolean getIsLooted (){
+		return this.isSearched;
+	}
+
 	// A simple getter function returns the name of the location
 	String getName() {
 		return this.name;
