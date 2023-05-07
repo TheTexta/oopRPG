@@ -7,9 +7,6 @@ public class Enemy extends Character implements Killable {
 	private Equip weapon;
 	private int health;
 
-	// TODO decide whether to keep this bool.
-	private boolean knowsPlayer;
-
 	public Enemy(int health, String name, boolean isKillable, ArrayList<Item> inventory, Equip weapon) {
 		super(name, isKillable, health);
 		this.setInventory(inventory);

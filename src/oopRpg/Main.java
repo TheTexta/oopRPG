@@ -72,7 +72,7 @@ public class Main {
 				mp5);
 		Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true, swatKit,
 				mp5);
-		Criminal testBadGuy = new Criminal(50, "Gabe", true, swatKit, shank);
+		Criminal testBadGuy = new Criminal(50, "David", true, swatKit, shank);
 		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
 				g19);
 
@@ -82,21 +82,16 @@ public class Main {
 			}
 		}, ak);
 
-		// Room Inventories
-		ArrayList<Item> homeInv = new ArrayList<>() {
+		// Empty Inventory to set to looted characters
+		ArrayList<Item> empty = new ArrayList<>();
+
+		Location home = new Location("Home", new ArrayList<>() {
 			{
 				add(g19);
 				add(tape);
 
 			}
-		};
-
-		// TODO simplify inv declaration. homeInv is not necessary
-
-		// Empty Inventory to set to looted characters
-		ArrayList<Item> empty = new ArrayList<>();
-
-		Location home = new Location("Home", homeInv, 5,
+		}, 5,
 				"You walk downstairs and grab your keys as you head to your car");
 		home.addCharacter(testBadGuy);
 
@@ -274,7 +269,8 @@ public class Main {
 								PrintMethods.delayPrintln(
 										inventory.get(choice - 1).getName() + "\n1." + equipUse + "\n0.Back");
 								// Stores the players choice whether to equip an item or go back
-								// TODO maybe include a description for every item that is printed when you are about to equip an item
+								// TODO maybe include a description for every item that is printed when you are
+								// about to equip an item
 								int equipOrBack = validChoice(0, 1);
 								if (equipOrBack == 1 && equipUse == "Equip") {
 									// TODO need to account for armor types
@@ -285,7 +281,6 @@ public class Main {
 								} else if (equipOrBack == 1 && equipUse == "Use") {
 									inventory.get(choice - 1).use();
 								}
-								
 
 							} else if (choice == 0) {
 								finishInv = true;
@@ -373,7 +368,8 @@ public class Main {
 					 * Iterates through all attackers on scene and has them do damage accordingly
 					 */
 
-					 // TODO Implement an exception so the player cannot be attacked while in the outpost sub loc until they start fighting
+					// TODO Implement an exception so the player cannot be attacked while in the
+					// outpost sub loc until they start fighting
 					if (locationArray[position].getAttackables(true).size() > 0) {
 
 						for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
