@@ -51,7 +51,8 @@ public class Player extends Character implements Killable {
 		if (armor == null) {
             throw new IllegalArgumentException("Armor cannot be null!");
         }
-		this.addItem(this.armor);
+		if (this.armor!=null)
+			this.addItem(this.armor);
 		this.subtractItem(armor);
 		this.armor=armor;
 	}
@@ -90,6 +91,9 @@ public class Player extends Character implements Killable {
 	
 		// Print the name of the player's equipped weapon
 		System.out.println("\nWeapon: " + this.weapon.getName());
+		// Print the name of the player's equipped armor.  Checks to make sure the armor equipped isnt null first. Does not print anything if it is
+		if (this.armor!=null)
+			System.out.println("\nArmor: "+ this.armor.getName());
 		// Return the ArrayList of items
 		return items;
 	}

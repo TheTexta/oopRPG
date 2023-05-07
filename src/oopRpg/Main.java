@@ -273,16 +273,19 @@ public class Main {
 									equipUse = "Use";
 								PrintMethods.delayPrintln(
 										inventory.get(choice - 1).getName() + "\n1." + equipUse + "\n0.Back");
+								// Stores the players choice whether to equip an item or go back
+								// TODO maybe include a description for every item that is printed when you are about to equip an item
 								int equipOrBack = validChoice(0, 1);
 								if (equipOrBack == 1 && equipUse == "Equip") {
 									// TODO need to account for armor types
-									if (((Equip) inventory.get(choice - 1)).getType())
+									if ((((Equip) inventory.get(choice - 1)).getType()))
 										player.setWeapon((Equip) inventory.get(choice - 1));
 									else
 										player.setArmor((Equip) inventory.get(choice - 1));
 								} else if (equipOrBack == 1 && equipUse == "Use") {
 									inventory.get(choice - 1).use();
 								}
+								
 
 							} else if (choice == 0) {
 								finishInv = true;
@@ -369,6 +372,8 @@ public class Main {
 					/*
 					 * Iterates through all attackers on scene and has them do damage accordingly
 					 */
+
+					 // TODO Implement an exception so the player cannot be attacked while in the outpost sub loc until they start fighting
 					if (locationArray[position].getAttackables(true).size() > 0) {
 
 						for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
