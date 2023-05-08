@@ -24,110 +24,114 @@ public class Main {
 	 */
 
 	public static void main(String[] args) throws Exception {
-		// Scanner object to read inputs
-		Scanner in = new Scanner(System.in);
-
-		// Weapons
-		Equip shank = new Equip("Shank", 25, true);
-		Equip g19 = new Equip("Glock 19", 50, true);
-		Equip mp5 = new Equip("MP5", 100, true);
-		Equip ak = new Equip("AK-47", 200, true);
-
-		// Armour
-		Equip kevlar = new Equip("Kevlar", 25, false);
-		Equip tie = new Equip("'Gating master' - Special Armored Tie", 100, false);
-
-		// Items
-		Item tape = new Item("Tape");
-
-		// Enemy kits
-		ArrayList<Item> swatKit = new ArrayList<>() {
-			{
-				add(kevlar);
-			}
-		};
-
-		ArrayList<Item> gangKit = new ArrayList<>() {
-			{
-				add(shank);
-			}
-		};
-
-		System.out.print("Enter your characters name (Enter for default name: Alex): ");
-
-		String name = in.nextLine();
-		if (name.isEmpty())
-			name = "Alex";
-
-		// Player declaration takes name from the user input.
-		Player player = new Player(name, shank);
-
-		// Names - possible names of officers
-		String[] names = { "A. Trinidad", "K. Hansen", "J. Briggs", "G. Serna", "S. Bowling", "K. Guest", "V. Montero",
-				"D. Millan", "L. Akins", "D. McClintock", "N. Mahoney", "T. Lindsay", "K. Begay", "S. Tinsley",
-				"D. Cornwell", "J. Fierro", "T. Newell", "X. Bearden", "M. Moffett", "E. Hooks" };
-
-		// Enemies
-		Police swat1 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true, swatKit,
-				mp5);
-		Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true, swatKit,
-				mp5);
-		Criminal testBadGuy = new Criminal(50, "David", true, swatKit, shank);
-		Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
-				g19);
-
-		Criminal outpostBoss = new Criminal(200, "Kristopher Churchill", true, new ArrayList<>() {
-			{
-				add(tie);
-			}
-		}, ak);
-
-		// Empty Inventory to set to looted characters
-		ArrayList<Item> empty = new ArrayList<>();
-
-		Location home = new Location("Home", new ArrayList<>() {
-			{
-				add(g19);
-				add(tape);
-
-			}
-		}, 5,
-				"You walk downstairs and grab your keys as you head to your car");
-		home.addCharacter(testBadGuy);
-
-		Location car = new Location("Car", 3, "You get into your car");
-		Location outpost = new Location("Outpost", 1,
-				"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
-
-		// outpost subLocations
-		Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
-		// TODO change where characters are added so they can be re initialised if the
-		// player chooses to restart the game.
-		outpostDeclineChal.addCharacter(outpostBoss);
-		Location outpostAcceptChal = new Location("Alleyway", 5,
-				"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you alone with the enemy\n");
-		outpostAcceptChal.addCharacter(op);
-
-		Location border = new Location("Border", 5,
-				"The blazing artificial lights shine you down as you approach the border\n");
-
-		// Placeholder location for endgame
-		Location endLocation = new Location("End", 0, "Game Over");
-
-		Location[] locationArray = { home, car, outpost, border, endLocation };
-
-		int position = 0;
-		/*
-		 * Linear position of the player. used to determine the current location the
-		 * player is in through the use of the locationArray
-		 */
-
-		// TODO add a random event like a civilian seeing you and reporting you if you
-		// dont shoot them
-		// TODO potential add a talk method to negotiate out of dangerous situations
-
-		boolean movementLocked = false;
 		while (true) {
+
+			// Scanner object to read inputs
+			Scanner in = new Scanner(System.in);
+
+			// Weapons
+			Equip shank = new Equip("Shank", 25, true);
+			Equip g19 = new Equip("Glock 19", 50, true);
+			Equip mp5 = new Equip("MP5", 100, true);
+			Equip ak = new Equip("AK-47", 200, true);
+
+			// Armour
+			Equip kevlar = new Equip("Kevlar", 25, false);
+			Equip tie = new Equip("'Gating master' - Special Armored Tie", 100, false);
+
+			// Items
+			Item tape = new Item("Tape");
+
+			// Enemy kits
+			ArrayList<Item> swatKit = new ArrayList<>() {
+				{
+					add(kevlar);
+				}
+			};
+
+			ArrayList<Item> gangKit = new ArrayList<>() {
+				{
+					add(shank);
+				}
+			};
+
+			System.out.print("Enter your characters name (Enter for default name: Alex): ");
+
+			String name = in.nextLine();
+			if (name.isEmpty())
+				name = "Alex";
+
+			// Player declaration takes name from the user input.
+			Player player = new Player(name, shank);
+
+			// Names - possible names of officers
+			String[] names = { "A. Trinidad", "K. Hansen", "J. Briggs", "G. Serna", "S. Bowling", "K. Guest",
+					"V. Montero",
+					"D. Millan", "L. Akins", "D. McClintock", "N. Mahoney", "T. Lindsay", "K. Begay", "S. Tinsley",
+					"D. Cornwell", "J. Fierro", "T. Newell", "X. Bearden", "M. Moffett", "E. Hooks" };
+
+			// Enemies
+			Police swat1 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true,
+					swatKit,
+					mp5);
+			Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true,
+					swatKit,
+					mp5);
+			Criminal testBadGuy = new Criminal(50, "David", true, swatKit, shank);
+			Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
+					g19);
+
+			Criminal outpostBoss = new Criminal(200, "Kristopher Churchill", true, new ArrayList<>() {
+				{
+					add(tie);
+				}
+			}, ak);
+
+			// Empty Inventory to set to looted characters
+			ArrayList<Item> empty = new ArrayList<>();
+
+			Location home = new Location("Home", new ArrayList<>() {
+				{
+					add(g19);
+					add(tape);
+
+				}
+			}, 5,
+					"You walk downstairs and grab your keys as you head to your car");
+			home.addCharacter(testBadGuy);
+
+			Location car = new Location("Car", 3, "You get into your car");
+			Location outpost = new Location("Outpost", 1,
+					"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
+
+			// outpost subLocations
+			Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
+			// TODO change where characters are added so they can be re initialised if the
+			// player chooses to restart the game.
+			outpostDeclineChal.addCharacter(outpostBoss);
+			Location outpostAcceptChal = new Location("Alleyway", 5,
+					"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you alone with the enemy\n");
+			outpostAcceptChal.addCharacter(op);
+
+			Location border = new Location("Border", 5,
+					"The blazing artificial lights shine you down as you approach the border\n");
+
+			// Placeholder location for endgame
+			Location endLocation = new Location("End", 0, "Game Over");
+
+			Location[] locationArray = { home, car, outpost, border, endLocation };
+
+			int position = 0;
+			/*
+			 * Linear position of the player. used to determine the current location the
+			 * player is in through the use of the locationArray
+			 */
+
+			// TODO add a random event like a civilian seeing you and reporting you if you
+			// dont shoot them
+			// TODO potential add a talk method to negotiate out of dangerous situations
+
+			boolean movementLocked = false;
 
 			PrintMethods.printLoading();
 			PrintMethods.delayPrint(
@@ -155,7 +159,7 @@ public class Main {
 				boolean move = false;
 				actions += locationArray[position].getActions();
 
-				while (!move) {
+				while (!move && !player.isDead()) {
 					PrintMethods.printLoading();
 
 					/*
@@ -179,18 +183,14 @@ public class Main {
 						}
 					}
 
-					// TODO rework this
-					if (player.isDead()) {
-						gameOver=true;
-						endGame("You died....");
-					}
-
 					boolean validChoice = false;
 
 					while (!validChoice) {
 						System.out.print("Your Choice: ");
 						choice = in.nextInt();
-						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4 || (choice == 5 && !locationArray[position].getIsLooted()) || (choice == 1 && (locationArray[position].getAttackables(true).size() > 0))) {
+						if ((choice == 2 && !movementLocked) || choice == 3 || choice == 4
+								|| (choice == 5 && !locationArray[position].getIsLooted())
+								|| (choice == 1 && (locationArray[position].getAttackables(true).size() > 0))) {
 							validChoice = true;
 						} else {
 							PrintMethods.invalidChoice("any number from options above");
@@ -207,8 +207,6 @@ public class Main {
 						locationArray[position].addCharacter(swat1);
 						locationArray[position].addCharacter(swat2);
 					}
-
-					// TODO seperate listAttackables and getAtttackables
 
 					/*
 					 * 1. Fight 2. Move 3. Inventory 4. Grab 5. Search
@@ -272,7 +270,6 @@ public class Main {
 								// about to equip an item
 								int equipOrBack = validChoice(0, 1);
 								if (equipOrBack == 1 && equipUse == "Equip") {
-									// TODO need to account for armor types
 									if ((((Equip) inventory.get(choice - 1)).getType()))
 										player.setWeapon((Equip) inventory.get(choice - 1));
 									else
@@ -376,6 +373,9 @@ public class Main {
 						}
 					}
 
+				}
+				if (player.isDead()) {
+					gameOver = true;
 				}
 			}
 
