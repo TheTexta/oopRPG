@@ -13,9 +13,8 @@ public class Citizen extends Enemy implements Reporter {
 	@Override
 	public void report(Character reported) {
 		if (!evil) {
-
+// TODO do i keep this??
 		}
-		// TODO Auto-generated method stub
 
 	}
 
