@@ -234,6 +234,7 @@ public class Main {
 						}
 					}
 					if (choice == 2) {
+						// TODO implement a punishment if you move before killing everybody
 						move = !move;
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
