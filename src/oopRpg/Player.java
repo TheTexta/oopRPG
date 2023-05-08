@@ -19,7 +19,7 @@ public class Player extends Character implements Killable {
 		// Set the player's health to 100
 		this.setHealth(100);
 		// Set the player's wanted level to 0
-		this.wantedLvl = 0;
+		this.wantedLvl = 1;
 		// Set the player's equipped weapon
 		this.weapon = weapon;
 		// Set the player's difficulty

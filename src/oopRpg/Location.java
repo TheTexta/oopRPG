@@ -102,7 +102,7 @@ public class Location {
 			}
 			return itemList;
 		} else if (this.inventory.size() == 1) {
-			return "As look look around the " + this.name + ", you spot a " + this.inventory.get(1).getName();
+			return "As look look around the " + this.name + ", you spot a " + this.inventory.get(0).getName();
 		} else {
 			return this.name + " hasnt got any items";
 		}

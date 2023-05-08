@@ -13,7 +13,7 @@ public final class PrintMethods {
 	public static void printLoading() throws InterruptedException {
 		for (int i = 0; i < consoleWidth / 2; i++) {
 			System.out.print(". ");
-			// Thread.sleep(25);
+			Thread.sleep(25);
 		}
 		System.out.print("\n");
 
@@ -100,7 +100,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			// Thread.sleep(defaultDelay);
+			Thread.sleep(defaultDelay);
 		}
 	}
 
@@ -108,7 +108,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg, int delay) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			// Thread.sleep(delay);
+			Thread.sleep(delay);
 		}
 	}
 
