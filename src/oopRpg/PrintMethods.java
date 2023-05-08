@@ -1,12 +1,17 @@
 package oopRpg;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 // TODO remember to comment out the thread.sleep
 public final class PrintMethods {
+	public final static int consoleWidth = 90;
+	public final static int defaultDelay = 20;
+
 	// Prints a loading message to console
 	public static void printLoading() throws InterruptedException {
-		for (int i = 0; i < 45; i++) {
+		for (int i = 0; i < consoleWidth / 2; i++) {
 			System.out.print(". ");
 			// Thread.sleep(25);
 		}
@@ -14,11 +19,88 @@ public final class PrintMethods {
 
 	}
 
+	// Prints a itteration of damagebar
+	public static double damageBar(int delay) {
+
+		int critZone = consoleWidth / 8;
+		int begCritZone = consoleWidth / 2 - critZone;
+		int endCritZone = consoleWidth / 2 + critZone;
+
+		int begHitZone = consoleWidth / 4;
+		int endHitZone = consoleWidth - begHitZone;
+
+		Scanner in = new Scanner(System.in);
+
+		boolean interrupted = false;
+
+		double damageMulti = 0.0;
+		boolean increasing = true;
+		int position = 0;
+		while (!interrupted) {
+			if (increasing)
+				position++;
+			else
+				position--;
+
+			if (position > consoleWidth-1) {
+				position--;
+				increasing = false;
+			} else if (position < 0) {
+				position++;
+				increasing = true;
+			}
+
+			for (int i = 0; i < 30; i++) {
+				System.out.print("\n");
+			}
+			for (int i = 0; i < consoleWidth; i++) {
+				if (i > begHitZone && i < endHitZone)
+					if (i > begCritZone && i < endCritZone)
+						System.out.print("#");
+					else
+						System.out.print("=");
+				else
+					System.out.print("-");
+
+			}
+			System.out.print("\n");
+			for (int i = 0; i < consoleWidth; i++) {
+				if (position == i)
+					System.out.print("^");
+				else
+					System.out.print("-");
+			}
+			// introduce a delay of 100 milliseconds and check for keyboard input
+			try {
+				Thread.sleep(delay);
+				if (System.in.available() > 0) {
+					// keyboard input detected, set interrupted flag and exit the loop
+					interrupted = true;
+					break;
+				}
+			} catch (InterruptedException | IOException e) {
+				((Throwable) e).printStackTrace();
+			}
+
+		}
+		if (interrupted) {
+			if (position > begCritZone && position < endCritZone) {
+				damageMulti = 2;
+			} else if (position > begHitZone && position < endHitZone) {
+				damageMulti = 1;
+			} else {
+				damageMulti = 0.5;
+			}
+		}
+		return damageMulti;
+
+	}
+
 	// Prints a message to console with a 20 ms delay between every character
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			// Thread.sleep(20);
+			// Thread.sleep(defaultDelay);
 		}
 	}
 
@@ -48,6 +130,10 @@ public final class PrintMethods {
 			System.out.println(i);
 			Thread.sleep(delay);
 		}
+	}
+
+	public static void delayPrint(String[] msg) throws InterruptedException {
+		delayPrint(msg, defaultDelay);
 	}
 
 	// Prints an error message indicating that the user input was invalid and

@@ -1,6 +1,7 @@
 package oopRpg;
 
 public class Item {
+	// TODO ask if my item system counts as complication
 	// Declare the name field as private so it can only be accessed within the Item class
 	private String name;
 	

@@ -9,9 +9,11 @@ public class Player extends Character implements Killable {
 	private Equip weapon;
 	// An object representing the player's armor equipped
 	private Equip armor;
+	// An integer to store the difficulty selected. The value stored here is used as a delay when calling the printmethods damageBar loop.
+	private int difficulty;
 
 	// Constructor method for the Player class
-	public Player(String name, Equip weapon) {
+	public Player(String name, Equip weapon, int difficulty) {
 		// Call the constructor of the parent class to set the player's name and set them as alive
 		super(name, true);
 		// Set the player's health to 100
@@ -20,6 +22,8 @@ public class Player extends Character implements Killable {
 		this.wantedLvl = 0;
 		// Set the player's equipped weapon
 		this.weapon = weapon;
+		// Set the player's difficulty
+		this.difficulty = difficulty;
 	}
 	
 	// Method for the player to loot an enemy's inventory after they are killed
@@ -59,15 +63,11 @@ public class Player extends Character implements Killable {
 	
 	// Method for the player to attack another character
 	public void attack(Character attacked) {
+		// Get the attack multi by calling the damageBar method.
+		double attackMulti = PrintMethods.damageBar(difficulty);
 		// Reduce the attacked character's health by a random value between 0 and the player's weapon's damage
-		attacked.setHealth(attacked.getHealth() - ((int) (Math.random() * (this.weapon.getDamage() * 0.5))
-				+ this.weapon.getDamage()));
-		/*
-		 * Intentionally the same attack method in the enemy and player class.
-		 * I want to have the attacks by any character to work the same way regardless
-		 * of class. The only variable that can change relating to the attacking system
-		 * is the health. 
-		 */
+		attacked.setHealth(attacked.getHealth() - ((int)((((int) (Math.random() * (this.weapon.getDamage() * 0.5))
+				+ this.weapon.getDamage()))*attackMulti)));
 	}
 	
 	// Method to list the items in the player's inventory and equipped weapon

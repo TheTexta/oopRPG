@@ -61,8 +61,18 @@ public class Main {
 			if (name.isEmpty())
 				name = "Alex";
 
+			System.out.print("Select difficulty (1-Easy, 2-Challenge, 3-Demon): ");
+			int difficulty = validChoice(1, 3);
+			if (difficulty == 1) {
+				difficulty = 10;
+			} else if (difficulty == 2) {
+				difficulty = 6;
+			} else {
+				difficulty = 3;
+			}
+
 			// Player declaration takes name from the user input.
-			Player player = new Player(name, shank);
+			Player player = new Player(name, shank, difficulty);
 
 			// Names - possible names of officers
 			String[] names = { "A. Trinidad", "K. Hansen", "J. Briggs", "G. Serna", "S. Bowling", "K. Guest",
@@ -228,7 +238,6 @@ public class Main {
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
 						if (locationArray[position] == endLocation) {
-							// TODO check if gameover needs a rework
 							gameOver = true;
 						} else {
 							// Do location progression checks
@@ -361,15 +370,22 @@ public class Main {
 					// -1 from actions if player chooses to loot/move/pickup
 
 					/*
-					 * Iterates through all attackers on scene and has them do damage accordingly
+					 * Iterates through all attackers on scene and has them do damage accordingly.
+					 * Only does damage if the player hasnt moved that turn.
+					 * Also constructs an array of concatonated strings of names of the characters
+					 * attacking the player
 					 */
 
-					// TODO Implement an exception so the player cannot be attacked while in the
-					// outpost sub loc until they start fighting
-					if (locationArray[position].getAttackables(true).size() > 0) {
-
-						for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
-							locationArray[position].getAttackables(true).get(i).attack(player);
+					if (!move) {
+						if (locationArray[position].getAttackables(true).size() > 0) {
+							PrintMethods.printLoading();
+							String[] charsAttacking = new String[locationArray[position].getAttackables(true).size()];
+							for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
+								charsAttacking[i] = locationArray[position].getAttackables(true).get(i).getName()
+										+ " attacks you!";
+								locationArray[position].getAttackables(true).get(i).attack(player);
+							}
+							PrintMethods.delayPrint(charsAttacking);
 						}
 					}
 
@@ -379,7 +395,6 @@ public class Main {
 				}
 			}
 
-			// TODO rework this
 			if (locationArray[position] == endLocation) {
 				endGame("You escaped!\n\n");
 			} else {
@@ -399,7 +414,6 @@ public class Main {
 		int playAgain = in.nextInt();
 		if (playAgain == 1) {
 			gameOver = false;
-			// TODO rework this.
 		} else if (playAgain == 2) {
 			in.close();
 			System.exit(0);
