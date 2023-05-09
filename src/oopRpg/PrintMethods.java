@@ -26,98 +26,99 @@ public final class PrintMethods {
 	// - a double value representing the damage multiplier based on user input
 	// Throws:
 	// - Exception if there's an error reading user input
-public static double damageBar(int delay) throws Exception {
-	// Calculate critical zone, beginning and ending positions for critical and hit zones
-	int critZone = consoleWidth / 8;
-	int begCritZone = consoleWidth / 2 - critZone;
-	int endCritZone = consoleWidth / 2 + critZone;
-	int begHitZone = consoleWidth / 4;
-	int endHitZone = consoleWidth - begHitZone;
-	
-	// Create a scanner to read user input
-	Scanner in = new Scanner(System.in);
-	
-	// Flag to indicate if user input has interrupted the animation
-	boolean interrupted = false;
-	
-	// Damage multiplier, animation direction, and position variables
-	double damageMulti = 0.0;
-	boolean increasing = true;
-	int position = 0;
-	
-	// Main animation loop
-	while (!interrupted) {
-		// Move position in the appropriate direction
-		if (increasing)
-			position++;
-		else
-			position--;
-	
-		// If position reaches the edge of the console, change direction
-		if (position > consoleWidth-1) {
-			position--;
-			increasing = false;
-		} else if (position < 0) {
-			position++;
-			increasing = true;
-		}
-	
-		// Clear console and print damage bar animation
-		clearConsole();
-		for (int i = 0; i < consoleWidth; i++) {
-			if (i > begHitZone && i < endHitZone)
-				if (i > begCritZone && i < endCritZone)
-					System.out.print("#");
-				else
-					System.out.print("=");
+	public static double damageBar(int delay) throws Exception {
+		// Calculate critical zone, beginning and ending positions for critical and hit
+		// zones
+		int critZone = consoleWidth / 8;
+		int begCritZone = consoleWidth / 2 - critZone;
+		int endCritZone = consoleWidth / 2 + critZone;
+		int begHitZone = consoleWidth / 4;
+		int endHitZone = consoleWidth - begHitZone;
+
+		// Create a scanner to read user input
+		Scanner in = new Scanner(System.in);
+
+		// Flag to indicate if user input has interrupted the animation
+		boolean interrupted = false;
+
+		// Damage multiplier, animation direction, and position variables
+		double damageMulti = 0.0;
+		boolean increasing = true;
+		int position = 0;
+
+		// Main animation loop
+		while (!interrupted) {
+			// Move position in the appropriate direction
+			if (increasing)
+				position++;
 			else
-				System.out.print("-");
-		}
-		System.out.print("\n");
-		for (int i = 0; i < consoleWidth; i++) {
-			if (position == i)
-				System.out.print("^");
-			else
-				System.out.print("-");
-		}
-	
-		// Introduce a delay and check for keyboard input
-		try {
-			Thread.sleep(delay);
-			if (System.in.available() > 0) {
-				// Keyboard input detected, set interrupted flag and exit the loop
-				interrupted = true;
-				break;
+				position--;
+
+			// If position reaches the edge of the console, change direction
+			if (position > consoleWidth - 1) {
+				position--;
+				increasing = false;
+			} else if (position < 0) {
+				position++;
+				increasing = true;
 			}
-		} catch (InterruptedException | IOException e) {
-			((Throwable) e).printStackTrace();
+
+			// Clear console and print damage bar animation
+			clearConsole();
+			for (int i = 0; i < consoleWidth; i++) {
+				if (i > begHitZone && i < endHitZone)
+					if (i > begCritZone && i < endCritZone)
+						System.out.print("#");
+					else
+						System.out.print("=");
+				else
+					System.out.print("-");
+			}
+			System.out.print("\n");
+			for (int i = 0; i < consoleWidth; i++) {
+				if (position == i)
+					System.out.print("^");
+				else
+					System.out.print("-");
+			}
+
+			// Introduce a delay and check for keyboard input
+			try {
+				Thread.sleep(delay);
+				if (System.in.available() > 0) {
+					// Keyboard input detected, set interrupted flag and exit the loop
+					interrupted = true;
+					break;
+				}
+			} catch (InterruptedException | IOException e) {
+				((Throwable) e).printStackTrace();
+			}
 		}
-	}
-	
-	// If interrupted by user input, calculate damage multiplier based on user input
-	if (interrupted) {
-		if (position > begCritZone && position < endCritZone) {
-			damageMulti = 2;
-		} else if (position > begHitZone && position < endHitZone) {
-			damageMulti = 1;
-		} else {
-			damageMulti = 0.5;
+
+		// If interrupted by user input, calculate damage multiplier based on user input
+		if (interrupted) {
+			if (position > begCritZone && position < endCritZone) {
+				damageMulti = 2;
+			} else if (position > begHitZone && position < endHitZone) {
+				damageMulti = 1;
+			} else {
+				damageMulti = 0.5;
+			}
 		}
-	}
-	
-	// Print the final damage multiplier animation
-	clearConsole();
-	for (int i=0;i<3;i++){
-		printMulti(damageMulti);
-		Thread.sleep(150);
+
+		// Print the final damage multiplier animation
 		clearConsole();
-		Thread.sleep(150);
-	}
-	printMulti(damageMulti);
-	
-	// Return the damage multiplier value
-	return damageMulti;
-	
+		for (int i = 0; i < 3; i++) {
+			printMulti(damageMulti);
+			Thread.sleep(150);
+			clearConsole();
+			Thread.sleep(150);
+		}
+		printMulti(damageMulti);
+
+		// Return the damage multiplier value
+		return damageMulti;
+
 	}
 
 	// Clear the console by entering 30 blank lines
@@ -276,33 +277,41 @@ public static double damageBar(int delay) throws Exception {
 		printArray(print, consoleWidth - 6);
 	}
 
-	// Prints a large version of 0.5x, 1.0x or 2.0x
+	// Prints a large version of 0.5x, 1.0x, or 2.0x
+	// Parameters:
+	// - multi: the damage multiplier value to print
+	// Throws:
+	// - Exception if there's an error printing the array or the multiplier value is
+	// invalid
 	public static void printMulti(double multi) throws Exception {
 		if (multi == 2) {
+			// Print the animation for 2.0x damage multiplier
 			printArray(new String[][] { { " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ "2)   AA  X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "    2)    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   2)     X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "  2)     X)  xx     D)    dd M)      mm  G)   gg " },
 					{ "2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
-		}
-		else if (multi == 1) {
+		} else if (multi == 1) {
+			// Print the animation for 1.0x damage multiplier
 			printArray(new String[][] { { "  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ " 1)!!    X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "   1)    X)  xx     D)    dd M)      mm  G)   gg " },
 					{ "1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
-		}
-		else if (multi == 0.5) {
+		} else if (multi == 0.5) {
+			// Print the animation for 0.5x damage multiplier
 			printArray(new String[][] { { " 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ "0)  )))    5)       X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "0))  )) **      5)  X)  xx     D)    dd M)      mm  G)   gg " },
 					{ " 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
-		} else{
-			throw new IllegalArgumentException("Invalid delay value: " + multi + ". Delay value must be a positive integer.");
+		} else {
+			throw new IllegalArgumentException(
+					// If the multiplier value is not 2, 1 or 0.5
+					"Invalid multi value: " + multi + ". Multi value must be a 2, 1 or 0.5.");
 		}
 	}
 
