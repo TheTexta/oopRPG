@@ -13,14 +13,14 @@ public final class PrintMethods {
 	public static void printLoading() throws InterruptedException {
 		for (int i = 0; i < consoleWidth / 2; i++) {
 			System.out.print(". ");
-			Thread.sleep(25);
+			//Thread.sleep(25);
 		}
 		System.out.print("\n");
 
 	}
 
 	// Prints a itteration of damagebar
-	public static double damageBar(int delay) {
+	public static double damageBar(int delay) throws Exception {
 
 		int critZone = consoleWidth / 8;
 		int begCritZone = consoleWidth / 2 - critZone;
@@ -50,9 +50,7 @@ public final class PrintMethods {
 				increasing = true;
 			}
 
-			for (int i = 0; i < 30; i++) {
-				System.out.print("\n");
-			}
+			clearConsole();
 			for (int i = 0; i < consoleWidth; i++) {
 				if (i > begHitZone && i < endHitZone)
 					if (i > begCritZone && i < endCritZone)
@@ -92,15 +90,32 @@ public final class PrintMethods {
 				damageMulti = 0.5;
 			}
 		}
+
+		clearConsole();
+		for (int i=0;i<3;i++){
+			printMulti(damageMulti);
+			Thread.sleep(150);
+			clearConsole();
+			Thread.sleep(150);
+
+		}
+		printMulti(damageMulti);
 		return damageMulti;
 
+	}
+
+	// Clear the console by entering 30 blank lines
+	public static void clearConsole(){
+		for (int i = 0; i < 30; i++) {
+			System.out.print("\n");
+		}
 	}
 
 	// Prints a message to console with a 20 ms delay between every character
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			Thread.sleep(defaultDelay);
+			//Thread.sleep(defaultDelay);
 		}
 	}
 
@@ -108,7 +123,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg, int delay) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			Thread.sleep(delay);
+			//Thread.sleep(delay);
 		}
 	}
 
@@ -128,7 +143,7 @@ public final class PrintMethods {
 	public static void delayPrint(String[] msg, int delay) throws InterruptedException {
 		for (String i : msg) {
 			System.out.println(i);
-			Thread.sleep(delay);
+			//Thread.sleep(delay);
 		}
 	}
 
@@ -213,8 +228,8 @@ public final class PrintMethods {
 		for (int r = 0; r < txt.length; r++) {
 			toPrint += "\n|";
 			for (int i = 0; i < txt[r].length; i++) {
-				toPrint += genPadding(padding, txt[r][i], false) + txt[r][i] + genPadding(padding, txt[r][i], true)
-						+ "|";
+				toPrint += (genPadding(padding, txt[r][i], false) + txt[r][i] + genPadding(padding, txt[r][i], true)
+						+ "|");
 			}
 		}
 
@@ -237,6 +252,40 @@ public final class PrintMethods {
 
 		// Call printArray method to print the converted array as a table
 		printArray(toPrintArray, 84);
+	}
+
+	// Takes a string and prints it with borders uding the printArray method
+	public static void printWrapped(String toPrint) throws Exception{
+		String [][] print = {{toPrint}};
+		printArray(print, consoleWidth-6);
+	}
+
+	// Prints a large version of 0.5x, 1.0x or 2.0x
+	public static void printMulti(double multi) throws Exception{
+		if (multi==2){
+			printArray(new String[][] {{	 " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg "},
+											{"2)   AA  X)  xx     D)   dd  M)  mm  mm  G)      "},
+											{"    2)    X)xx      D)    dd M)  mm  mm G)  ggg  "},
+				   							{"   2)     X)xx      D)    dd M)  mm  mm G)    gg "},
+											{"  2)     X)  xx     D)    dd M)      mm  G)   gg "},
+											{"2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+		}
+		if (multi==1){
+			printArray(new String[][] {{	"  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg "},
+											{" 1)!!    X)  xx     D)   dd  M)  mm  mm  G)      "},
+											{"   1)     X)xx      D)    dd M)  mm  mm G)  ggg  "},
+											{"   1)     X)xx      D)    dd M)  mm  mm G)    gg "},
+											{"   1)    X)  xx     D)    dd M)      mm  G)   gg "},
+											{"1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+		}
+		if (multi==0.5){
+			printArray(new String[][] {{	" 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg "},
+											{"0)  )))    5)       X)  xx     D)   dd  M)  mm  mm  G)      "},
+											{"0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  "},
+											{"0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg "},
+											{"0))  )) **      5)  X)  xx     D)    dd M)      mm  G)   gg "},
+											{" 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+		}
 	}
 
 }

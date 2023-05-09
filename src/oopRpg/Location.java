@@ -148,7 +148,7 @@ public class Location {
 	 * searched.
 	 */
 	public void listNextAction(boolean inBetweenLoc) throws Exception {
-		String toPrint[][] = { { "------", "------", "3. Inventory", "4. Grab", "------" } };
+		String toPrint[][] = { { "------", "------", "3. Inventory", "4. Loot", "------" } };
 
 		if (getAttackables(true).size()>0) {
 			toPrint[0][0] = "1. Fight";

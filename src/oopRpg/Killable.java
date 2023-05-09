@@ -1,5 +1,5 @@
 package oopRpg;
 
 public interface Killable {
-	void attack(Character attacked);
+	void attack(Character attacked) throws InterruptedException, Exception;
 }

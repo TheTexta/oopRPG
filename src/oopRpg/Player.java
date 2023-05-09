@@ -9,12 +9,14 @@ public class Player extends Character implements Killable {
 	private Equip weapon;
 	// An object representing the player's armor equipped
 	private Equip armor;
-	// An integer to store the difficulty selected. The value stored here is used as a delay when calling the printmethods damageBar loop.
+	// An integer to store the difficulty selected. The value stored here is used as
+	// a delay when calling the printmethods damageBar loop.
 	private int difficulty;
 
 	// Constructor method for the Player class
 	public Player(String name, Equip weapon, int difficulty) {
-		// Call the constructor of the parent class to set the player's name and set them as alive
+		// Call the constructor of the parent class to set the player's name and set
+		// them as alive
 		super(name, true);
 		// Set the player's health to 100
 		this.setHealth(100);
@@ -25,7 +27,7 @@ public class Player extends Character implements Killable {
 		// Set the player's difficulty
 		this.difficulty = difficulty;
 	}
-	
+
 	// Method for the player to loot an enemy's inventory after they are killed
 	public void loot(Enemy looted) {
 		if (looted.isDead()) {
@@ -36,12 +38,12 @@ public class Player extends Character implements Killable {
 			throw new java.lang.RuntimeException("Player tried to loot an alive enemy!");
 		}
 	}
-	
+
 	// Method for the player to change their equipped weapon
 	public void setWeapon(Equip weapon) {
 		if (weapon == null) {
-            throw new IllegalArgumentException("Armor cannot be null!");
-        }
+			throw new IllegalArgumentException("Armor cannot be null!");
+		}
 		// Add the player's current weapon to their inventory
 		this.addItem(this.weapon);
 		// Remove the new weapon from the player's inventory
@@ -51,33 +53,39 @@ public class Player extends Character implements Killable {
 	}
 
 	// Method for the player to set there armor type
-	public void setArmor(Equip armor){
+	public void setArmor(Equip armor) {
 		if (armor == null) {
-            throw new IllegalArgumentException("Armor cannot be null!");
-        }
-		if (this.armor!=null)
+			throw new IllegalArgumentException("Armor cannot be null!");
+		}
+		if (this.armor != null)
 			this.addItem(this.armor);
 		this.subtractItem(armor);
-		this.armor=armor;
+		this.armor = armor;
 	}
-	
+
 	// Method for the player to attack another character
-	public void attack(Character attacked) {
+	public void attack(Character attacked) throws Exception {
 		// Get the attack multi by calling the damageBar method.
 		double attackMulti = PrintMethods.damageBar(difficulty);
-		// Reduce the attacked character's health by a random value between 0 and the player's weapon's damage
-		attacked.setHealth(attacked.getHealth() - ((int)((((int) (Math.random() * (this.weapon.getDamage() * 0.5))
-				+ this.weapon.getDamage()))*attackMulti)));
+		int attackDamage = ((int) ((((int) (Math.random() * (this.weapon.getDamage() * 0.5))
+				+ this.weapon.getDamage())) * attackMulti));
+		// Reduce the attacked character's health by a random value between 0 and the
+		// player's weapon's damage
+		attacked.setHealth(attacked.getHealth() - attackDamage);
+		
+		PrintMethods.printWrapped("You use the " + this.weapon.getName() + " to attack " + attacked.getName() + " doing: "
+				+ attackDamage + " DMG");
+
 	}
-	
+
 	// Method to list the items in the player's inventory and equipped weapon
 	public ArrayList<Item> listAndGetItems() {
 		// Create a new ArrayList to hold the items
 		ArrayList<Item> items = new ArrayList<>();
-	
+
 		// Print the header for the inventory
 		System.out.println("Inventory:");
-	
+
 		// If the player's inventory is not empty
 		if (!this.getInventory().isEmpty()) {
 			// Loop through each item in the inventory
@@ -88,16 +96,17 @@ public class Player extends Character implements Killable {
 				items.add(this.getInventory().get(i));
 			}
 		}
-	
+
 		// Print the name of the player's equipped weapon
 		System.out.println("\nWeapon: " + this.weapon.getName());
-		// Print the name of the player's equipped armor.  Checks to make sure the armor equipped isnt null first. Does not print anything if it is
-		if (this.armor!=null)
-			System.out.println("\nArmor: "+ this.armor.getName());
+		// Print the name of the player's equipped armor. Checks to make sure the armor
+		// equipped isnt null first. Does not print anything if it is
+		if (this.armor != null)
+			System.out.println("\nArmor: " + this.armor.getName());
 		// Return the ArrayList of items
 		return items;
 	}
-	
+
 	// Method to return the player's current action multiplier
 	public int actionMultiplier() {
 		return this.wantedLvl;
@@ -105,7 +114,7 @@ public class Player extends Character implements Killable {
 		// after killing a cop or citizen
 		// If wanted lvl too high you get recognized at the border
 	}
-	
+
 	// Getter method for the player's equipped weapon
 	public Equip getWeapon() {
 		return this.weapon;

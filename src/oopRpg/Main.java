@@ -386,7 +386,7 @@ public class Main {
 										+ " attacks you!";
 								locationArray[position].getAttackables(true).get(i).attack(player);
 							}
-							PrintMethods.delayPrint(charsAttacking);
+							PrintMethods.printArray(new String[][]{(charsAttacking)}, 84);
 						}
 					}
 
