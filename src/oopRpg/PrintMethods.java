@@ -13,99 +13,115 @@ public final class PrintMethods {
 	public static void printLoading() throws InterruptedException {
 		for (int i = 0; i < consoleWidth / 2; i++) {
 			System.out.print(". ");
-			//Thread.sleep(25);
+			// Thread.sleep(25);
 		}
 		System.out.print("\n");
 
 	}
 
-	// Prints a itteration of damagebar
-	public static double damageBar(int delay) throws Exception {
-
-		int critZone = consoleWidth / 8;
-		int begCritZone = consoleWidth / 2 - critZone;
-		int endCritZone = consoleWidth / 2 + critZone;
-
-		int begHitZone = consoleWidth / 4;
-		int endHitZone = consoleWidth - begHitZone;
-
-		Scanner in = new Scanner(System.in);
-
-		boolean interrupted = false;
-
-		double damageMulti = 0.0;
-		boolean increasing = true;
-		int position = 0;
-		while (!interrupted) {
-			if (increasing)
-				position++;
-			else
-				position--;
-
-			if (position > consoleWidth-1) {
-				position--;
-				increasing = false;
-			} else if (position < 0) {
-				position++;
-				increasing = true;
-			}
-
-			clearConsole();
-			for (int i = 0; i < consoleWidth; i++) {
-				if (i > begHitZone && i < endHitZone)
-					if (i > begCritZone && i < endCritZone)
-						System.out.print("#");
-					else
-						System.out.print("=");
-				else
-					System.out.print("-");
-
-			}
-			System.out.print("\n");
-			for (int i = 0; i < consoleWidth; i++) {
-				if (position == i)
-					System.out.print("^");
-				else
-					System.out.print("-");
-			}
-			// introduce a delay of 100 milliseconds and check for keyboard input
-			try {
-				Thread.sleep(delay);
-				if (System.in.available() > 0) {
-					// keyboard input detected, set interrupted flag and exit the loop
-					interrupted = true;
-					break;
-				}
-			} catch (InterruptedException | IOException e) {
-				((Throwable) e).printStackTrace();
-			}
-
+	// Prints an iteration of damage bar animation
+	// Parameters:
+	// - delay: the delay in milliseconds between each animation frame
+	// Returns:
+	// - a double value representing the damage multiplier based on user input
+	// Throws:
+	// - Exception if there's an error reading user input
+public static double damageBar(int delay) throws Exception {
+	// Calculate critical zone, beginning and ending positions for critical and hit zones
+	int critZone = consoleWidth / 8;
+	int begCritZone = consoleWidth / 2 - critZone;
+	int endCritZone = consoleWidth / 2 + critZone;
+	int begHitZone = consoleWidth / 4;
+	int endHitZone = consoleWidth - begHitZone;
+	
+	// Create a scanner to read user input
+	Scanner in = new Scanner(System.in);
+	
+	// Flag to indicate if user input has interrupted the animation
+	boolean interrupted = false;
+	
+	// Damage multiplier, animation direction, and position variables
+	double damageMulti = 0.0;
+	boolean increasing = true;
+	int position = 0;
+	
+	// Main animation loop
+	while (!interrupted) {
+		// Move position in the appropriate direction
+		if (increasing)
+			position++;
+		else
+			position--;
+	
+		// If position reaches the edge of the console, change direction
+		if (position > consoleWidth-1) {
+			position--;
+			increasing = false;
+		} else if (position < 0) {
+			position++;
+			increasing = true;
 		}
-		if (interrupted) {
-			if (position > begCritZone && position < endCritZone) {
-				damageMulti = 2;
-			} else if (position > begHitZone && position < endHitZone) {
-				damageMulti = 1;
-			} else {
-				damageMulti = 0.5;
-			}
-		}
-
+	
+		// Clear console and print damage bar animation
 		clearConsole();
-		for (int i=0;i<3;i++){
-			printMulti(damageMulti);
-			Thread.sleep(150);
-			clearConsole();
-			Thread.sleep(150);
-
+		for (int i = 0; i < consoleWidth; i++) {
+			if (i > begHitZone && i < endHitZone)
+				if (i > begCritZone && i < endCritZone)
+					System.out.print("#");
+				else
+					System.out.print("=");
+			else
+				System.out.print("-");
 		}
+		System.out.print("\n");
+		for (int i = 0; i < consoleWidth; i++) {
+			if (position == i)
+				System.out.print("^");
+			else
+				System.out.print("-");
+		}
+	
+		// Introduce a delay and check for keyboard input
+		try {
+			Thread.sleep(delay);
+			if (System.in.available() > 0) {
+				// Keyboard input detected, set interrupted flag and exit the loop
+				interrupted = true;
+				break;
+			}
+		} catch (InterruptedException | IOException e) {
+			((Throwable) e).printStackTrace();
+		}
+	}
+	
+	// If interrupted by user input, calculate damage multiplier based on user input
+	if (interrupted) {
+		if (position > begCritZone && position < endCritZone) {
+			damageMulti = 2;
+		} else if (position > begHitZone && position < endHitZone) {
+			damageMulti = 1;
+		} else {
+			damageMulti = 0.5;
+		}
+	}
+	
+	// Print the final damage multiplier animation
+	clearConsole();
+	for (int i=0;i<3;i++){
 		printMulti(damageMulti);
-		return damageMulti;
-
+		Thread.sleep(150);
+		clearConsole();
+		Thread.sleep(150);
+	}
+	printMulti(damageMulti);
+	
+	// Return the damage multiplier value
+	return damageMulti;
+	
 	}
 
 	// Clear the console by entering 30 blank lines
-	public static void clearConsole(){
+	public static void clearConsole() {
 		for (int i = 0; i < 30; i++) {
 			System.out.print("\n");
 		}
@@ -115,7 +131,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			//Thread.sleep(defaultDelay);
+			// Thread.sleep(defaultDelay);
 		}
 	}
 
@@ -123,7 +139,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg, int delay) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			//Thread.sleep(delay);
+			// Thread.sleep(delay);
 		}
 	}
 
@@ -143,7 +159,7 @@ public final class PrintMethods {
 	public static void delayPrint(String[] msg, int delay) throws InterruptedException {
 		for (String i : msg) {
 			System.out.println(i);
-			//Thread.sleep(delay);
+			// Thread.sleep(delay);
 		}
 	}
 
@@ -255,36 +271,38 @@ public final class PrintMethods {
 	}
 
 	// Takes a string and prints it with borders uding the printArray method
-	public static void printWrapped(String toPrint) throws Exception{
-		String [][] print = {{toPrint}};
-		printArray(print, consoleWidth-6);
+	public static void printWrapped(String toPrint) throws Exception {
+		String[][] print = { { toPrint } };
+		printArray(print, consoleWidth - 6);
 	}
 
 	// Prints a large version of 0.5x, 1.0x or 2.0x
-	public static void printMulti(double multi) throws Exception{
-		if (multi==2){
-			printArray(new String[][] {{	 " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg "},
-											{"2)   AA  X)  xx     D)   dd  M)  mm  mm  G)      "},
-											{"    2)    X)xx      D)    dd M)  mm  mm G)  ggg  "},
-				   							{"   2)     X)xx      D)    dd M)  mm  mm G)    gg "},
-											{"  2)     X)  xx     D)    dd M)      mm  G)   gg "},
-											{"2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+	public static void printMulti(double multi) throws Exception {
+		if (multi == 2) {
+			printArray(new String[][] { { " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg " },
+					{ "2)   AA  X)  xx     D)   dd  M)  mm  mm  G)      " },
+					{ "    2)    X)xx      D)    dd M)  mm  mm G)  ggg  " },
+					{ "   2)     X)xx      D)    dd M)  mm  mm G)    gg " },
+					{ "  2)     X)  xx     D)    dd M)      mm  G)   gg " },
+					{ "2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
 		}
-		if (multi==1){
-			printArray(new String[][] {{	"  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg "},
-											{" 1)!!    X)  xx     D)   dd  M)  mm  mm  G)      "},
-											{"   1)     X)xx      D)    dd M)  mm  mm G)  ggg  "},
-											{"   1)     X)xx      D)    dd M)  mm  mm G)    gg "},
-											{"   1)    X)  xx     D)    dd M)      mm  G)   gg "},
-											{"1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+		else if (multi == 1) {
+			printArray(new String[][] { { "  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg " },
+					{ " 1)!!    X)  xx     D)   dd  M)  mm  mm  G)      " },
+					{ "   1)     X)xx      D)    dd M)  mm  mm G)  ggg  " },
+					{ "   1)     X)xx      D)    dd M)  mm  mm G)    gg " },
+					{ "   1)    X)  xx     D)    dd M)      mm  G)   gg " },
+					{ "1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
 		}
-		if (multi==0.5){
-			printArray(new String[][] {{	" 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg "},
-											{"0)  )))    5)       X)  xx     D)   dd  M)  mm  mm  G)      "},
-											{"0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  "},
-											{"0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg "},
-											{"0))  )) **      5)  X)  xx     D)    dd M)      mm  G)   gg "},
-											{" 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  "}}, consoleWidth-6);
+		else if (multi == 0.5) {
+			printArray(new String[][] { { " 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg " },
+					{ "0)  )))    5)       X)  xx     D)   dd  M)  mm  mm  G)      " },
+					{ "0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  " },
+					{ "0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg " },
+					{ "0))  )) **      5)  X)  xx     D)    dd M)      mm  G)   gg " },
+					{ " 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
+		} else{
+			throw new IllegalArgumentException("Invalid delay value: " + multi + ". Delay value must be a positive integer.");
 		}
 	}
 
