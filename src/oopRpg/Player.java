@@ -19,7 +19,7 @@ public class Player extends Character implements Killable {
 	public Player(String name, Equip weapon, int difficulty) {
 		// Call the constructor of the parent class to set the player's name and set
 		// them as alive
-		super(name, true,100);
+		super(name, true, 100);
 		this.maxHealth = 100;
 		// Set the player's wanted level to 0
 		this.wantedLvl = 1;
@@ -28,13 +28,12 @@ public class Player extends Character implements Killable {
 		// Set the player's difficulty
 		this.difficulty = difficulty;
 
-		
 	}
 
 	// Method to set the players health
-	public void setHealth(int health){
+	public void setHealth(int health) {
 		super.setHealth(health);
-		if (this.getHealth()>maxHealth){
+		if (this.getHealth() > maxHealth) {
 			super.setHealth(maxHealth);
 		}
 	}
@@ -148,7 +147,12 @@ public class Player extends Character implements Killable {
 	}
 
 	// Getter method for players wanted rating
-	public int getWanted(){
+	public int getWanted() {
 		return this.wantedLvl;
+	}
+
+	// Setter method that sets the wantedlvl for a player
+	public void setWanted(int lvl) {
+		this.wantedLvl = lvl;
 	}
 }

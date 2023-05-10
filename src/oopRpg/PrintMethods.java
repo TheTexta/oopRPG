@@ -4,17 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// TODO remember to comment out the thread.sleep
 public final class PrintMethods {
+	// Width of the window
 	private final static int consoleWidth = 90;
-	private final static int consoleWidthOffset = consoleWidth - 6;
+	// Width of the window with the offset of 6 to account for banner objects
+	private final static int consoleWidthOffset = consoleWidth-6;
+	// Default delay when printing objects
 	private final static int defaultDelay = 20;
 
 	// Prints a loading message to console
 	public static void printLoading() throws InterruptedException {
 		for (int i = 0; i < consoleWidth / 2; i++) {
 			System.out.print(". ");
-			// Thread.sleep(25);
+			Thread.sleep(25);
 		}
 		System.out.print("\n");
 
@@ -133,7 +135,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			// Thread.sleep(defaultDelay);
+			Thread.sleep(defaultDelay);
 		}
 	}
 
@@ -141,7 +143,7 @@ public final class PrintMethods {
 	public static void delayPrint(String msg, int delay) throws InterruptedException {
 		for (int i = 0; i < msg.length(); i++) {
 			System.out.print(msg.charAt(i));
-			// Thread.sleep(delay);
+			Thread.sleep(delay);
 		}
 	}
 
@@ -161,7 +163,7 @@ public final class PrintMethods {
 	public static void delayPrint(String[] msg, int delay) throws InterruptedException {
 		for (String i : msg) {
 			System.out.println(i);
-			// Thread.sleep(delay);
+			Thread.sleep(delay);
 		}
 	}
 
@@ -233,7 +235,7 @@ public final class PrintMethods {
 	// - padding: the amount of padding to add to each cell in the table
 	// Throws:
 	// - an Exception with the message "txt is null" if txt is an empty array
-	public static void print2dArray(String[][] txt, int padding) throws Exception {
+	public static void print2dArray(String[][] txt, int padding, int delay) throws Exception {
 		if (txt.length == 0)
 			throw new Exception("txt is null");
 
@@ -253,7 +255,11 @@ public final class PrintMethods {
 
 		// Add divider string to end of table and print with delay
 		toPrint += "\n" + devider;
-		delayPrint(toPrint.split("\n"), 30);
+		delayPrint(toPrint.split("\n"), delay);
+	}
+
+	public static void print2dArray(String[][]txt,int padding) throws Exception{
+		print2dArray(txt, padding, 30);
 	}
 
 	// Takes a string array and prints with the print2darray method as if every line
@@ -323,7 +329,7 @@ public final class PrintMethods {
 					{ "    2)    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   2)     X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "  2)     X)  xx     D)    dd M)      mm  G)   gg " },
-					{ "2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
+					{ "2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6, 0);
 		} else if (multi == 1) {
 			// Print the animation for 1.0x damage multiplier
 			print2dArray(new String[][] { { "  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg " },
@@ -331,7 +337,7 @@ public final class PrintMethods {
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "   1)    X)  xx     D)    dd M)      mm  G)   gg " },
-					{ "1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
+					{ "1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6, 0);
 		} else if (multi == 0.5) {
 			// Print the animation for 0.5x damage multiplier
 			print2dArray(new String[][] { { " 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg " },
@@ -339,7 +345,7 @@ public final class PrintMethods {
 					{ "0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg " },
 					{ "0))  )) **      5)  X)  xx     D)    dd M)      mm  G)   gg " },
-					{ " 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
+					{ " 0))))  ## 5)%%%%  X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6, 0);
 		} else {
 			throw new IllegalArgumentException(
 					// If the multiplier value is not 2, 1 or 0.5

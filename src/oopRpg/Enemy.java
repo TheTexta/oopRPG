@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Enemy extends Character implements Killable {
 
 	private Equip weapon;
-	private int health;
 
 	public Enemy(int health, String name, boolean isKillable, ArrayList<Item> inventory, Equip weapon) {
 		super(name, isKillable, health);
@@ -29,6 +28,7 @@ public class Enemy extends Character implements Killable {
 		 */
 		}
 
+	// Returns arraylist of inventory with the enemies weapon
 	public ArrayList<Item> getInventory() {
 		// Get original inv without weapon item
 		ArrayList<Item> combinedInv = super.getInventory();
@@ -38,6 +38,7 @@ public class Enemy extends Character implements Killable {
 		return combinedInv;
 	}
 
+	// Returns the inv of enemy if the enemy isnt already looted
 	public ArrayList<Item> loot() {
 		if (!this.getIsLooted())
 			this.addItem(weapon);

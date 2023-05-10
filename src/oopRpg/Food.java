@@ -1,5 +1,4 @@
 package oopRpg;
-import java.util.Objects;
 
 public class Food extends Destructible {
 
