@@ -78,7 +78,6 @@ public class Location {
 				addedItems += ", " + hiddenInventory.get(i).getName();
 		}
 		if (this.hiddenInventory.isEmpty()) {
-
 			return "You dont find anything";
 		}
 
