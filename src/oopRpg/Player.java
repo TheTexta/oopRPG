@@ -152,7 +152,8 @@ public class Player extends Character implements Killable {
 	}
 
 	// Setter method that sets the wantedlvl for a player
-	public void setWanted(int lvl) {
+	public void setWanted(int lvl) throws Exception {
 		this.wantedLvl = lvl;
+		PrintMethods.printWrapped("Your wanted rating is now: "+this.wantedLvl);
 	}
 }

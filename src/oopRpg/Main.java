@@ -36,7 +36,7 @@ public class Main {
 			Equip ak = new Equip("AK-47", 200, true, "Unstoppable force of power - 200ATK");
 
 			// Food
-			Destructible apple = new Food("Apple", 15,4, "a juicy apple" );
+			Destructible apple = new Food("Apple", 15, 4, "a juicy apple");
 
 			// Armour
 			Equip kevlar = new Equip("Kevlar", 25, false, "A synthetic kevlar vest providing moderate protection");
@@ -93,8 +93,9 @@ public class Main {
 			Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true,
 					swatKit,
 					mp5);
-			
-			Criminal op = new Criminal(100, "Enemy Gang Member: " + names[((int) Math.random() * 19) + 1], true, gangKit,
+
+			Criminal op = new Criminal(100, "Enemy Gang Member: " + names[((int) Math.random() * 19) + 1], true,
+					gangKit,
 					g19);
 
 			Criminal outpostBoss = new Criminal(200, "Kristopher Churchill", true, new ArrayList<>() {
@@ -112,14 +113,13 @@ public class Main {
 				}
 			}, 5,
 					"You walk downstairs and grab your keys as you head to your car");
-			
 
-			Location car = new Location("Car",new ArrayList<>() {
+			Location car = new Location("Car", new ArrayList<>() {
 				{
 					add(apple);
 
 				}
-			},new ArrayList<>() {
+			}, new ArrayList<>() {
 				{
 					add(mp5);
 
@@ -155,14 +155,13 @@ public class Main {
 			 * player is in through the use of the locationArray
 			 */
 
-			
 			// Boolean stores the state of the player movement. if set to true player
 			// cannot progress to next location through increasing position var.
 			boolean movementLocked = false;
 
 			PrintMethods.printLoading();
 			PrintMethods.delayPrint(
-					"You jolt awake to the sound of your phone buzzing on the nightstand,\nand as you groggily answer it, your worst fears are confirmed: \nthe police are on their way, and you've got to get out of the country, fast.\n");
+					"You jolt awake to the sound of your phone buzzing on the nightstand,\nand as you groggily answer it, your worst fears are confirmed: \nthe police are on their way, and you've got to get out of the country, fast.\n\nYou have to go to the criminal OUTPOST to collect a fakeid to cross the BORDER\n\nYou have to be careful though. If you attract to much attention you might be spotted at teh border");
 			PrintMethods.printLoading();
 
 			PrintMethods.delayPrint("\nWould you like to see the tutorial? (y or n): ");
@@ -240,7 +239,7 @@ public class Main {
 						locationArray[position].addCharacter(swat1);
 						locationArray[position].addCharacter(swat2);
 
-						player.setWanted(player.getWanted()+1);
+						player.setWanted(player.getWanted() + 1);
 					}
 
 					/*
@@ -379,10 +378,10 @@ public class Main {
 
 								// Show all the lootable items in the location
 								ArrayList<Item> lootableInv = locationArray[position].getInventory();
-								if (locationArray[position].getInventory().size()!=0){
+								if (locationArray[position].getInventory().size() != 0) {
 									PrintMethods.printArrayList(lootableInv, true);
 								}
-								
+
 								PrintMethods.delayPrint("\n0. Back\n");
 
 								// validate the user input
@@ -463,7 +462,7 @@ public class Main {
 							charsAttacking[charsAttacking.length - 1] = "You take " + damageTaken + " dmg";
 							PrintMethods.printArray(charsAttacking);
 						}
-						
+
 					}
 
 				}
@@ -473,7 +472,14 @@ public class Main {
 			}
 			// checks if the player arrived at the final loc before gameOver is true
 			if (locationArray[position] == endLocation) {
-				endGame("You escaped!\n\n");
+				if (player.getWanted() > 1) {
+					if ((Math.random() * 10 + 1) > player.getWanted())
+						endGame("You escaped!\n\n");
+					else
+						endGame("You were spotted trying to cross the border and are shot immediantly\n\n");
+				} else {
+					endGame("You escaped!\n\n");
+				}
 			} else {
 				endGame("You died...");
 			}
