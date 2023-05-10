@@ -9,6 +9,11 @@ public class Equip extends Item {
         this.damage = damage;
         this.weapon = weapon;
     }
+    public Equip(String name, int damage, boolean weapon, String description){
+        super(name, description);
+        this.damage = damage;
+        this.weapon = weapon;
+    }
 
     int getDamage() {
         return this.damage;

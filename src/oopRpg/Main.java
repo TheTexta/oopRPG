@@ -35,9 +35,12 @@ public class Main {
 			Equip mp5 = new Equip("MP5", 100, true);
 			Equip ak = new Equip("AK-47", 200, true);
 
+			// Food
+			Destructible apple = new Food("Apple", 15,4, "a juicy apple" );
+
 			// Armour
-			Equip kevlar = new Equip("Kevlar", 25, false);
-			Equip tie = new Equip("'Gating master' - Special Armored Tie", 100, false);
+			Equip kevlar = new Equip("Kevlar", 25, false, "A synthetic kevlar vest providing moderate protection");
+			Equip tie = new Equip("'Gating master' - Special Armored Tie", 100, false, "'God was scared of gatings'");
 
 			// Items
 			Item tape = new Item("Tape");
@@ -113,21 +116,30 @@ public class Main {
 					"You walk downstairs and grab your keys as you head to your car");
 			home.addCharacter(testBadGuy);
 
-			Location car = new Location("Car", 3, "You get into your car");
+			Location car = new Location("Car",new ArrayList<>() {
+				{
+					add(apple);
+
+				}
+			},new ArrayList<>() {
+				{
+					add(mp5);
+
+				}
+			}, 3, "You get into your car");
 			Location outpost = new Location("Outpost", 1,
 					"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
 
 			// outpost subLocations
 			Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
-			// TODO change where characters are added so they can be re initialised if the
-			// player chooses to restart the game.
+
 			outpostDeclineChal.addCharacter(outpostBoss);
 			Location outpostAcceptChal = new Location("Alleyway", 5,
-					"You accept the bosses challange. He walks you outside, down the road to a little allayway: 'Grangers Alley'\n'You kill the pigs down there you get your id'\nHe walks away leaving you alone with the enemy\n");
+					"You accept the bosses challange. He walks you outside and takes you to: Grangers Alley. 'You kill the pigs down there you get your id.' He walks away leaving you alone with the enemy");
 			outpostAcceptChal.addCharacter(op);
 
 			Location border = new Location("Border", 5,
-					"The blazing artificial lights shine you down as you approach the border\n");
+					"The blazing artificial lights shine you down as you approach the border");
 
 			// Placeholder location for endgame
 			Location endLocation = new Location("End", 0, "Game Over");
@@ -145,10 +157,7 @@ public class Main {
 			 * player is in through the use of the locationArray
 			 */
 
-			// TODO add a random event like a civilian seeing you and reporting you if you
-			// dont shoot them
-			// TODO potential add a talk method to negotiate out of dangerous situations
-
+			
 			// Boolean stores the state of the player movement. if set to true player
 			// cannot progress to next location through increasing position var.
 			boolean movementLocked = false;
@@ -193,18 +202,18 @@ public class Main {
 
 					// Prints the introduction to the location
 					locationArray[position].introduceLocation();
-					// Lists the next action that the player can take based on their current
-					// location
-					locationArray[position].listNextAction(movementLocked);
-
 					// If movement is locked and there are attackers in the current location, then
 					// unlock the movement
 					if (movementLocked) {
-						// TODO look over this it doesnt look right
-						if (locationArray[position].getAttackables(true).size() >= 1) {
+						if (locationArray[position].getAttackables(true).size() > 0) {
+							movementLocked = true;
+						} else {
 							movementLocked = false;
 						}
 					}
+					// Lists the next action that the player can take based on their current
+					// location
+					locationArray[position].listNextAction(movementLocked);
 
 					// Boolean to hold whether the player's choice is valid or not
 					boolean validChoice = false;
@@ -252,8 +261,18 @@ public class Main {
 
 					}
 					if (choice == 2) {
-						// TODO implement a punishment if you move before killing everybody
 						// If the player chooses to move, update their position and actions
+						if (locationArray[position].getAttackables(true).size() > 0) {
+							PrintMethods.printLoading();
+							int healthDif = player.getHealth();
+							locationArray[position].getAttackables(true).get(0).attack(player);
+							locationArray[position].getAttackables(true).get(0).attack(player);
+							healthDif -= player.getHealth();
+							PrintMethods.printWrapped(
+									"As you run away " + locationArray[position].getAttackables(true).get(0).getName()
+											+ " knocks you over!");
+							PrintMethods.printWrapped("You take " + healthDif + " DMG");
+						}
 						move = !move;
 						position++;
 						actions = actions - (1 * player.actionMultiplier());
@@ -291,6 +310,7 @@ public class Main {
 							// Let the player choose which item they want to interact with
 							choice = validChoice(0, inventory.size());
 							if (0 < choice) {
+								// TODO account for food items
 								String equipUse;
 								// If the chosen item is an equipable item, set the equipUse variable to "Equip"
 								// Otherwise, set it to "Use"
@@ -299,12 +319,12 @@ public class Main {
 								else
 									equipUse = "Use";
 
-								// Print the item name and the options to equip or use the item, or go back
-								PrintMethods.delayPrintln(
-										inventory.get(choice - 1).getName() + "\n1." + equipUse + "\n0.Back");
 
-								// TODO maybe include a description for every item that is printed when you are
-								// about to equip an item
+								if (inventory.get(choice - 1).getClass().equals(Food.class))
+								// Print the item name and the options to equip or use the item, or go back
+								PrintMethods.printArray(new String[] { inventory.get(choice - 1).getName(),
+										inventory.get(choice - 1).getDescription(), "1. " + equipUse });
+								System.out.println("0. Back");
 
 								// Get the player's choice whether to equip an item or go back
 								int equipOrBack = validChoice(0, 1);
@@ -333,22 +353,23 @@ public class Main {
 						// Bool to hold if the player has finished looting the area
 						boolean finishLoot = false;
 
-						// String to hold all the lootable items/characters in the location
-						String possibleLoots = "Search the:\n1. " + locationArray[position].getName() + "\n";
+						String[] arrayPrint = new String[locationArray[position].getAttackables(false).size() + 2];
+						arrayPrint[0] = "Loot which of the following:";
+						arrayPrint[1] = "1. " + locationArray[position].getName();
 
 						/*
 						 * The following for loop iterates through every possible lootable inv in the
-						 * location and add the list to the possibleLoots String
+						 * location and add the list to the arrayPrint
 						 */
 						for (int i = 0; i < locationArray[position].getAttackables(false).size(); i++) {
-							possibleLoots += (i + 2) + ". "
+							arrayPrint[(i + 2)] = (i + 2) + ". "
 									+ locationArray[position].getAttackables(false).get(i).getName();
 						}
 
 						// while the player hasn't finished looting
 						while (!finishLoot) {
 							// Display all lootable items/characters in the location
-							PrintMethods.delayPrintln(possibleLoots);
+							PrintMethods.printArray(arrayPrint);
 							PrintMethods.delayPrint("\n0. Back\n");
 
 							// validate the user input
@@ -357,14 +378,15 @@ public class Main {
 							// Choice number 1 will always be the current location
 							if (choice == 1) {
 
-								PrintMethods.delayPrintln("What would you like to pickup in the "
+								PrintMethods.printWrapped("What would you like to pickup in the "
 										+ locationArray[position].getName() + ":");
 
 								// Show all the lootable items in the location
 								ArrayList<Item> lootableInv = locationArray[position].getInventory();
-								for (int i = 0; i < lootableInv.size(); i++) {
-									PrintMethods.delayPrint((i + 1) + ". " + lootableInv.get(i).getName() + "\n");
+								if (locationArray[position].getInventory().size()!=0){
+									PrintMethods.printArrayList(lootableInv, true);
 								}
+								
 								PrintMethods.delayPrint("\n0. Back\n");
 
 								// validate the user input
@@ -372,26 +394,20 @@ public class Main {
 
 								// If player chose an item to pick up
 								if (0 < choice) {
-									PrintMethods.delayPrint(
-											"\n" + lootableInv.get(choice - 1).getName() + "\n1.Pickup\n\n0.Back\n");
 
-									// validate the user input
-									int pickup = validChoice(0, 1);
-									// If player chose to pick up the item
-									if (pickup == 1) {
-										// Add the item to the player's inventory and remove it from the location's
-										// inventory
-										player.addItem(lootableInv.get(choice - 1));
-										locationArray[position].removeItem(choice - 1);
-										actions = actions - (1 * player.actionMultiplier());
-									}
+									// Add the item to the player's inventory and remove it from the location's
+									// inventory
+									player.addItem(lootableInv.get(choice - 1));
+									locationArray[position].removeItem(choice - 1);
+									actions = actions - (1 * player.actionMultiplier());
+
 								}
 							} else if (choice != 0) { // If player chose to loot a character
 														// Display the items found in the character's pockets and add
 														// them to the player's inventory
-								PrintMethods.delayPrint("You rumage around "
+								PrintMethods.printWrapped("You rumage around "
 										+ locationArray[position].getAttackables(false).get(choice - 2).getName()
-										+ "s pockets and find:\n");
+										+ "s pockets and find:");
 
 								ArrayList<Item> itemsToAdd = locationArray[position].getAttackables(false)
 										.get(choice - 2).loot();
@@ -401,7 +417,8 @@ public class Main {
 								// If there were no items to be looted, add a message
 								if (itemsToAdd.size() == 0)
 									itemsToAdd.add(new Item("!!! Character already looted !!!"));
-								PrintMethods.printArrayList(itemsToAdd);
+								PrintMethods.printArrayList(itemsToAdd, false);
+								finishLoot = true;
 
 							}
 
@@ -419,7 +436,6 @@ public class Main {
 						PrintMethods.printWrapped(locationArray[position].reveal());
 						// Deduct an action point from the player's remaining actions
 						actions = actions - (1 * player.actionMultiplier());
-						// TODO intergrate search better with print methods
 					}
 
 					// wait for a number
@@ -428,9 +444,10 @@ public class Main {
 
 					/*
 					 * Iterates through all attackers on scene and has them do damage accordingly.
-					 * Only does damage if the player hasnt moved that turn.
+					 * Only does damage if the player hasnt moved that turn. (cant take damage while
+					 * moving)
 					 * Also constructs an array of concatonated strings of names of the characters
-					 * attacking the player
+					 * attacking the player. Prints using the printarray method
 					 */
 
 					if (!move) {
@@ -445,9 +462,16 @@ public class Main {
 								locationArray[position].getAttackables(true).get(i).attack(player);
 							}
 							damageTaken -= player.getHealth();
-							charsAttacking[charsAttacking.length - 2] = "------------------------------------------";
+							charsAttacking[charsAttacking.length - 2] = PrintMethods.genString(PrintMethods.getOffset(),
+									"-");
 							charsAttacking[charsAttacking.length - 1] = "You take " + damageTaken + " dmg";
 							PrintMethods.printArray(charsAttacking);
+						}
+						if (locationArray[position].getCitizens(true).size() > 0) {
+							PrintMethods.printLoading();
+							locationArray[position].getCitizens(true).get(0).report(player);
+							PrintMethods.printWrapped("You have been spotted!!! You are now at wanted lvl: " + player.getHealth());
+							// TODO
 						}
 					}
 

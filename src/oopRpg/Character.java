@@ -91,9 +91,6 @@ abstract class Character {
 	// Takes an arraylist of items and adds them to the character's inventory
 	public void addAllToInventory(ArrayList<Item> inventory) {
 		this.inventory.addAll(inventory);
-
-		// If the added inventory is null a trim is needed
-		// TODO check if the above is true
 		this.inventory.trimToSize();
 	}
 

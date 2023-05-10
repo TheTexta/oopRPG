@@ -6,8 +6,9 @@ import java.util.Scanner;
 
 // TODO remember to comment out the thread.sleep
 public final class PrintMethods {
-	public final static int consoleWidth = 90;
-	public final static int defaultDelay = 20;
+	private final static int consoleWidth = 90;
+	private final static int consoleWidthOffset = consoleWidth - 6;
+	private final static int defaultDelay = 20;
 
 	// Prints a loading message to console
 	public static void printLoading() throws InterruptedException {
@@ -218,7 +219,7 @@ public final class PrintMethods {
 	// - letter: the letter to repeat
 	// Returns:
 	// - a string consisting of the letter repeated num times
-	private static String genString(int num, String letter) {
+	public static String genString(int num, String letter) {
 		String spaces = new String();
 		for (int i = 0; i < num; i++) {
 			spaces += letter;
@@ -263,8 +264,24 @@ public final class PrintMethods {
 		for (int i = 0; i < txt.length; i++) {
 			toPrint[i][0] = txt[i];
 		}
-		print2dArray(toPrint, consoleWidth-6);
+		print2dArray(toPrint, consoleWidth - 6);
 
+	}
+
+	// Sepperates Text at given interval
+	public static String[] genSepperatedString(String msg, int interval) {
+		int numOfLine = msg.length() / interval;
+		if (msg.length() % interval > 0)
+			numOfLine++;
+
+		String[] sepperated = new String[numOfLine];
+		for (int i = 0; i < numOfLine; i++) {
+			if (msg.substring(i * interval).length() > interval)
+				sepperated[i] = msg.substring(i * interval, i * interval + interval);
+			else
+				sepperated[i] = msg.substring(i * interval);
+		}
+		return sepperated;
 	}
 
 	// This method prints an ArrayList of Item objects as a formatted table.
@@ -272,15 +289,18 @@ public final class PrintMethods {
 	// - toPrint: the ArrayList of Item objects to print
 	// Throws:
 	// - an Exception with the message "txt is null" if txt is an empty array
-	public static void printArrayList(ArrayList<Item> toPrint) throws Exception {
+	public static void printArrayList(ArrayList<Item> toPrint, boolean numbered) throws Exception {
 		// Convert ArrayList to two-dimensional array of strings
 		String[][] toPrintArray = new String[toPrint.size()][1];
 		for (int i = 0; i < toPrint.size(); i++) {
-			toPrintArray[i][0] = toPrint.get(i).getName();
+			if (numbered)
+				toPrintArray[i][0] = (i + 1) +". "+ toPrint.get(i).getName();
+			else
+				toPrintArray[i][0] = toPrint.get(i).getName();
 		}
 
 		// Call printArray method to print the converted array as a table
-		print2dArray(toPrintArray, 84);
+		print2dArray(toPrintArray, consoleWidthOffset);
 	}
 
 	// Takes a string and prints it with borders uding the printArray method
@@ -325,6 +345,14 @@ public final class PrintMethods {
 					// If the multiplier value is not 2, 1 or 0.5
 					"Invalid multi value: " + multi + ". Multi value must be a 2, 1 or 0.5.");
 		}
+	}
+
+	public static int getConsoleWidth() {
+		return consoleWidth;
+	}
+
+	public static int getOffset() {
+		return consoleWidthOffset;
 	}
 
 }

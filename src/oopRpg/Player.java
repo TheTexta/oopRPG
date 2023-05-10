@@ -12,20 +12,31 @@ public class Player extends Character implements Killable {
 	// An integer to store the difficulty selected. The value stored here is used as
 	// a delay when calling the printmethods damageBar loop.
 	private int difficulty;
+	// Int representing the max health a player can have
+	private int maxHealth;
 
 	// Constructor method for the Player class
 	public Player(String name, Equip weapon, int difficulty) {
 		// Call the constructor of the parent class to set the player's name and set
 		// them as alive
-		super(name, true);
-		// Set the player's health to 100
-		this.setHealth(100);
+		super(name, true,100);
+		this.maxHealth = 100;
 		// Set the player's wanted level to 0
 		this.wantedLvl = 1;
 		// Set the player's equipped weapon
 		this.weapon = weapon;
 		// Set the player's difficulty
 		this.difficulty = difficulty;
+
+		
+	}
+
+	// Method to set the players health
+	public void setHealth(int health){
+		super.setHealth(health);
+		if (this.getHealth()>maxHealth){
+			super.setHealth(maxHealth);
+		}
 	}
 
 	// Method for the player to loot an enemy's inventory after they are killed
@@ -72,37 +83,53 @@ public class Player extends Character implements Killable {
 		// Reduce the attacked character's health by a random value between 0 and the
 		// player's weapon's damage
 		attacked.setHealth(attacked.getHealth() - attackDamage);
-		
-		PrintMethods.printWrapped("You use the " + this.weapon.getName() + " to attack " + attacked.getName() + " doing: "
-				+ attackDamage + " DMG");
+
+		if (attacked.isDead()) {
+			PrintMethods.printWrapped("You use the " + this.weapon.getName() + " and kill " + attacked.getName());
+
+		} else {
+			PrintMethods.printWrapped("You use the " + this.weapon.getName() + " to attack " + attacked.getName() + ": "
+					+ attackDamage + " DMG");
+		}
 
 	}
 
 	// Method to list the items in the player's inventory and equipped weapon
-	public ArrayList<Item> listAndGetItems() {
+	public ArrayList<Item> listAndGetItems() throws Exception {
 		// Create a new ArrayList to hold the items
 		ArrayList<Item> items = new ArrayList<>();
 
+		int listInvSize = this.getInventory().size() + 5;
+		// String to hold listInv
+		String[] listInv = new String[listInvSize];
+
 		// Print the header for the inventory
-		System.out.println("Inventory:");
+		listInv[0] = "Inventory:";
+		listInv[1] = PrintMethods.genString(PrintMethods.getOffset(), "-");
 
 		// If the player's inventory is not empty
 		if (!this.getInventory().isEmpty()) {
 			// Loop through each item in the inventory
 			for (int i = 0; i < this.getInventory().size(); i++) {
 				// Print the name of the item with a number indicating its position in the list
-				System.out.println((items.size() + 1) + ". " + this.getInventory().get(i).getName());
+				listInv[i + 2] = (items.size() + 1) + ". " + this.getInventory().get(i).getName();
 				// Add the item to the ArrayList
 				items.add(this.getInventory().get(i));
 			}
 		}
 
+		// Add a divider
+		listInv[listInvSize - 3] = PrintMethods.genString(PrintMethods.getOffset(), "-");
+
 		// Print the name of the player's equipped weapon
-		System.out.println("\nWeapon: " + this.weapon.getName());
+		listInv[listInvSize - 2] = "Weapon: " + this.weapon.getName();
 		// Print the name of the player's equipped armor. Checks to make sure the armor
-		// equipped isnt null first. Does not print anything if it is
+		// equipped isnt null first.
+		listInv[listInvSize - 1] = "Armor: ------";
 		if (this.armor != null)
-			System.out.println("\nArmor: " + this.armor.getName());
+			listInv[listInvSize - 1] = "Armor: " + this.armor.getName();
+
+		PrintMethods.printArray(listInv);
 		// Return the ArrayList of items
 		return items;
 	}
@@ -118,5 +145,10 @@ public class Player extends Character implements Killable {
 	// Getter method for the player's equipped weapon
 	public Equip getWeapon() {
 		return this.weapon;
+	}
+
+	// Getter method for players wanted rating
+	public int getWanted(){
+		return this.wantedLvl;
 	}
 }

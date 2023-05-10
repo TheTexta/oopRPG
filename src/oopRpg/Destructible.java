@@ -6,9 +6,9 @@ public class Destructible extends Item {
 
 	// This constructor initializes the name and durability of the Destructible
 	// item.
-	public Destructible(String name, int durability) {
+	public Destructible(String name, int durability, String description) {
 		// Call the constructor of the superclass to set the name.
-		super(name);
+		super(name, description);
 		this.durability = durability;
 	}
 
@@ -20,12 +20,14 @@ public class Destructible extends Item {
 	 * broken.
 	 */
 	public void use() {
-		// Call the use method in the superclass to generate the standard message.
-		super.use();
-		// Decrement the durability.
-		this.durability--;
+		if (this.durability > 0) {
+			// Call the use method in the superclass to generate the standard message.
+			super.use();
+			// Decrement the durability.
+			this.durability--;
+		}
 		// If the durability is 0 or less, call the breakItem method.
-		if (this.durability <= 0)
+		if (this.durability == 0)
 			breakItem();
 	}
 
@@ -33,7 +35,7 @@ public class Destructible extends Item {
 	 * This method generates a message to the console indicating that the item has
 	 * broken into a million pieces.
 	 */
-	public void breakItem() {
+	private void breakItem() {
 		System.out.println(this.getName() + " shatters into a million pieces");
 	}
 }

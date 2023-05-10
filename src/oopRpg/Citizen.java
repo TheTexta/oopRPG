@@ -1,7 +1,6 @@
 package oopRpg;
 
 import java.util.ArrayList;
-// TODO decide whether to keep this class
 public class Citizen extends Enemy implements Reporter {
 	boolean evil;
 

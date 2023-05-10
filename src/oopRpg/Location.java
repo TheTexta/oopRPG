@@ -31,7 +31,8 @@ public class Location {
 		this.enterMsg = enterMsg;
 	}
 
-	public Location(String name, ArrayList<Item> inventory, int actions, ArrayList<Character> characters, String enterMsg) {
+	public Location(String name, ArrayList<Item> inventory, int actions, ArrayList<Character> characters,
+			String enterMsg) {
 		this.name = name;
 		this.inventory = inventory;
 		this.actions = actions;
@@ -44,6 +45,13 @@ public class Location {
 		this.inventory = inventory;
 		this.actions = actions;
 		this.enterMsg = enterMsg;
+	}
+	public Location(String name, ArrayList<Item> inventory,ArrayList<Item> hiddenInventory, int actions, String enterMsg) {
+		this.name = name;
+		this.inventory = inventory;
+		this.actions = actions;
+		this.enterMsg = enterMsg;
+		this.hiddenInventory = hiddenInventory;
 	}
 
 	public Location(String name, int actions, String enterMsg) {
@@ -58,7 +66,7 @@ public class Location {
 	 * string to print the the console to indicate to the players what, if any,
 	 * items were revealed from searching the location
 	 */
-	String reveal() {
+	public String reveal() {
 		inventory.addAll(hiddenInventory);
 
 		String addedItems = "";
@@ -77,39 +85,17 @@ public class Location {
 		return "You find " + addedItems + "!";
 	}
 
-	boolean getIsLooted (){
+	public boolean getIsLooted() {
 		return this.isSearched;
 	}
 
 	// A simple getter function returns the name of the location
-	String getName() {
+	public String getName() {
 		return this.name;
 	}
 
-	/*
-	 * ListItems() is a method for generating a string to display to the console of
-	 * all potentially lootable items a location contains. The method will iterate
-	 * through every item in the Inventory Arraylist and will generate an
-	 * accompanying msg along with all the items said location contains.
-	 */
-	String listItems() {
-		String itemList = "You spot some items lying around in the " + this.name + ": \n";
-		if (this.inventory.size() > 1) {
-			for (Item i : this.inventory) {
-
-				itemList += " - " + i.getName() + "\n";
-
-			}
-			return itemList;
-		} else if (this.inventory.size() == 1) {
-			return "As look look around the " + this.name + ", you spot a " + this.inventory.get(0).getName();
-		} else {
-			return this.name + " hasnt got any items";
-		}
-	}
-
-// A simple getter method for returning the inventory of a location
-	ArrayList<Item> getInventory() {
+	// A simple getter method for returning the inventory of a location
+	public ArrayList<Item> getInventory() {
 		return this.inventory;
 	}
 
@@ -120,7 +106,7 @@ public class Location {
 	 * again additional actions are not added which would lead to an infinite amount
 	 * of actions.
 	 */
-	int getActions() {
+	public int getActions() {
 		int actions = this.actions;
 		this.actions = 0;
 		return actions;
@@ -131,14 +117,35 @@ public class Location {
 	 * the location to the player along with the visible items contained within said
 	 * location.
 	 */
-	void introduceLocation() throws InterruptedException {
-		PrintMethods.delayPrintln(this.getName() + ":\n" + this.enterMsg);
-		System.out.println(this.listItems());
+	public void introduceLocation() throws Exception {
+		String[] printMsg = PrintMethods.genSepperatedString(this.enterMsg, PrintMethods.getOffset() - 2);
+		int printOffset = 3 + printMsg.length;
+		String[] toPrint = new String[this.getInventory().size() + printOffset];
+		String genSpacer = PrintMethods.genString(PrintMethods.getOffset(), "-");
+
+		for (int i = 0; i < printMsg.length; i++) {
+			toPrint[i] = printMsg[i];
+		}
+
+		toPrint[printOffset-3] = genSpacer;
+
+		toPrint[printOffset-2] = "Location: " + this.getName();
+
+		toPrint[printOffset-1] = genSpacer;
+
+		for (int i = 0; i < this.getInventory().size(); i++) {
+			toPrint[i + printOffset] = this.getInventory().get(i).getName();
+		}
+		if (this.getInventory().size() == 0) {
+			toPrint[printOffset-1] = "There are no items in " + this.getName();
+		}
+
+		PrintMethods.printArray(toPrint);
 
 	}
 
 	// A simple setter method to add characters to a location
-	void addCharacter(Character c) {
+	public void addCharacter(Character c) {
 		this.characters.add(c);
 	}
 
@@ -150,13 +157,13 @@ public class Location {
 	public void listNextAction(boolean inBetweenLoc) throws Exception {
 		String toPrint[][] = { { "------", "------", "3. Inventory", "4. Loot", "------" } };
 
-		if (getAttackables(true).size()>0) {
+		if (getAttackables(true).size() > 0) {
 			toPrint[0][0] = "1. Fight";
 		}
 		if (!this.isSearched) {
 			toPrint[0][4] = "5. Search";
 		}
-		if (!inBetweenLoc){
+		if (!inBetweenLoc) {
 			toPrint[0][1] = "2. Move";
 		}
 		PrintMethods.print2dArray(toPrint, 16);
@@ -165,27 +172,6 @@ public class Location {
 		// list them
 	}
 
-	/*
-	 * Method to determine if the location has characters which the player can
-	 * attack. Since all attackable characters share the same superclass of Enemy,
-	 * the method simply iterates through each character and checks whether or not
-	 * the superclass of the character is of the enemy type. Additionally, the
-	 * method tests if the character is dead or not as a dead character cannot be
-	 * further attacked.
-	 */
-
-	 // TODO simplify the following three methods
-	public boolean hasAttackables() {
-		if (this.characters.size() > 0) {
-			for (int i = 0; i < this.characters.size(); i++) {
-				if (this.characters.get(i).getClass().getSuperclass().equals(Enemy.class) && !this.characters.get(i).isDead()) // TODO review this
-					return true;
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
 	/*
 	 * Method returns all characters which the character can kill through an
 	 * ArrayList.
@@ -196,7 +182,7 @@ public class Location {
 
 		for (int i = 0; i < this.characters.size(); i++) {
 			// If the character is not dead and alive is requested
-			if (((!this.characters.get(i).isDead()&&alive)||(this.characters.get(i).isDead()&&!alive))
+			if (((!this.characters.get(i).isDead() && alive) || (this.characters.get(i).isDead() && !alive))
 					&& this.characters.get(i).getClass().getSuperclass().equals(Enemy.class))
 			// Goes through all characters in location and adds those who arent dead and can
 			// be attacked
@@ -209,6 +195,25 @@ public class Location {
 		return attackers;
 	}
 
+	public ArrayList<Citizen> getCitizens(boolean alive){
+		ArrayList<Citizen> citizens = new ArrayList<>();
+
+		for (int i = 0; i < this.characters.size(); i++) {
+			// If the character is not dead and alive is requested
+			if (((!this.characters.get(i).isDead() && alive) || (this.characters.get(i).isDead() && !alive))
+					&& this.characters.get(i).getClass().equals(Citizen.class))
+			// Goes through all characters in location and adds those who arent dead and can
+			// be attacked
+			{
+				citizens.add((Citizen)this.characters.get(i));
+
+			}
+
+		}
+
+		return citizens;
+	}
+
 	public void listAttackables() throws Exception {
 		ArrayList<Enemy> attackers = getAttackables(true);
 
@@ -218,8 +223,7 @@ public class Location {
 			toPrint[i][0] = (i + 1) + ". " + attackers.get(i).getName() + " - " + attackers.get(i).getHealth() + "hp";
 		}
 
-		// TODO ask if 84 needs to be a variable
-		PrintMethods.print2dArray(toPrint, 84);
+		PrintMethods.print2dArray(toPrint, PrintMethods.getOffset());
 
 	}
 
