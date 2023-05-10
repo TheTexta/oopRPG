@@ -239,6 +239,8 @@ public class Main {
 
 						locationArray[position].addCharacter(swat1);
 						locationArray[position].addCharacter(swat2);
+
+						player.setWanted(player.getWanted()+1);
 					}
 
 					/*
