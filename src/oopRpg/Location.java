@@ -195,24 +195,6 @@ public class Location {
 		return attackers;
 	}
 
-	public ArrayList<Citizen> getCitizens(boolean alive){
-		ArrayList<Citizen> citizens = new ArrayList<>();
-
-		for (int i = 0; i < this.characters.size(); i++) {
-			// If the character is not dead and alive is requested
-			if (((!this.characters.get(i).isDead() && alive) || (this.characters.get(i).isDead() && !alive))
-					&& this.characters.get(i).getClass().equals(Citizen.class))
-			// Goes through all characters in location and adds those who arent dead and can
-			// be attacked
-			{
-				citizens.add((Citizen)this.characters.get(i));
-
-			}
-
-		}
-
-		return citizens;
-	}
 
 	public void listAttackables() throws Exception {
 		ArrayList<Enemy> attackers = getAttackables(true);

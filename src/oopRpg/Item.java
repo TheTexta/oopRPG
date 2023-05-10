@@ -1,6 +1,6 @@
 package oopRpg;
 
-public class Item {
+public class Item implements Useables {
 	// Declare the name field as private so it can only be accessed within the Item class
 	private String name;
 	private String description;
@@ -18,16 +18,16 @@ public class Item {
 	}
 
 	// Method for using an item, which prints a message indicating that the item has been used
-	void use(Character user) throws Exception {
+	public void use(Character user) throws Exception {
 		PrintMethods.printWrapped("Used " + name);
 	}
 
-	String getDescription(){
+	public String getDescription(){
 		return this.description;
 	}
 
 	// Getter method for getting the name of an item
-	String getName() {
+	public String getName() {
 		return this.name;
 	}
 

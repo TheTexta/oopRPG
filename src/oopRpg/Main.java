@@ -467,12 +467,7 @@ public class Main {
 							charsAttacking[charsAttacking.length - 1] = "You take " + damageTaken + " dmg";
 							PrintMethods.printArray(charsAttacking);
 						}
-						if (locationArray[position].getCitizens(true).size() > 0) {
-							PrintMethods.printLoading();
-							locationArray[position].getCitizens(true).get(0).report(player);
-							PrintMethods.printWrapped("You have been spotted!!! You are now at wanted lvl: " + player.getHealth());
-							// TODO
-						}
+						
 					}
 
 				}
