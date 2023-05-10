@@ -46,7 +46,9 @@ public class Location {
 		this.actions = actions;
 		this.enterMsg = enterMsg;
 	}
-	public Location(String name, ArrayList<Item> inventory,ArrayList<Item> hiddenInventory, int actions, String enterMsg) {
+
+	public Location(String name, ArrayList<Item> inventory, ArrayList<Item> hiddenInventory, int actions,
+			String enterMsg) {
 		this.name = name;
 		this.inventory = inventory;
 		this.actions = actions;
@@ -126,17 +128,17 @@ public class Location {
 			toPrint[i] = printMsg[i];
 		}
 
-		toPrint[printOffset-3] = genSpacer;
+		toPrint[printOffset - 3] = genSpacer;
 
-		toPrint[printOffset-2] = "Location: " + this.getName();
+		toPrint[printOffset - 2] = "Location: " + this.getName();
 
-		toPrint[printOffset-1] = genSpacer;
+		toPrint[printOffset - 1] = genSpacer;
 
 		for (int i = 0; i < this.getInventory().size(); i++) {
 			toPrint[i + printOffset] = this.getInventory().get(i).getName();
 		}
 		if (this.getInventory().size() == 0) {
-			toPrint[printOffset-1] = "There are no items in " + this.getName();
+			toPrint[printOffset - 1] = "There are no items in " + this.getName();
 		}
 
 		PrintMethods.printArray(toPrint);
@@ -194,7 +196,8 @@ public class Location {
 		return attackers;
 	}
 
-
+	// Method lists all attackable enemies with an itterating number concatonated
+	// with each name.
 	public void listAttackables() throws Exception {
 		ArrayList<Enemy> attackers = getAttackables(true);
 

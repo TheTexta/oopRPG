@@ -36,7 +36,8 @@ public class Main {
 			Equip ak = new Equip("AK-47", 200, true, "Unstoppable force of power - 200ATK");
 
 			// Food
-			Destructible apple = new Food("Apple", 15, 4, "a juicy apple");
+			Food apple = new Food("Apple", 15, 4, "a juicy apple");
+			Food ration = new Food("Ration", 50, 1, "Standard military ration - 1 portion - 50HP");
 
 			// Armour
 			Equip kevlar = new Equip("Kevlar", 25, false, "A synthetic kevlar vest providing moderate protection");
@@ -44,6 +45,8 @@ public class Main {
 
 			// Items
 			Item tape = new Item("Tape");
+			Item id = new Item("Officer ID",
+					"A bloodstained id for officer: Micheal Reeves. Its basically useless now");
 
 			// Enemy kits - does not include the enemies weapon as that is in a sepperate
 			// slot
@@ -56,6 +59,15 @@ public class Main {
 			ArrayList<Item> gangKit = new ArrayList<>() {
 				{
 					add(shank);
+				}
+			};
+
+			ArrayList<Item> patrolKit = new ArrayList<>() {
+				{
+					add(ak);
+					add(kevlar);
+					add(ration);
+					add(id);
 				}
 			};
 
@@ -103,6 +115,7 @@ public class Main {
 					add(tie);
 				}
 			}, ak);
+			Police patrol = new Police(300, "Patrol Vechile", true, patrolKit, ak);
 
 			// Locations
 			Location home = new Location("Home", new ArrayList<>() {
@@ -119,11 +132,7 @@ public class Main {
 					add(apple);
 
 				}
-			}, new ArrayList<>() {
-				{
-					add(mp5);
 
-				}
 			}, 3, "You get into your car");
 			Location outpost = new Location("Outpost", 1,
 					"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
@@ -136,6 +145,9 @@ public class Main {
 					"You accept the bosses challange. He walks you outside and takes you to: Grangers Alley. 'You kill the pigs down there you get your id.' He walks away leaving you alone with the enemy");
 			outpostAcceptChal.addCharacter(op);
 
+			Location patrolEncounter = new Location ("Highway" ,2, "As you drive to the border, a random cop car apears out of nowhere. They flash there lights at you and after you dont pull over they pull out the big guns...");
+			patrolEncounter.addCharacter(patrol);
+
 			Location border = new Location("Border", 5,
 					"The blazing artificial lights shine you down as you approach the border");
 
@@ -147,7 +159,7 @@ public class Main {
 			 * that they will encounter them. this makes it easy to move from location to
 			 * location as the player progressses.
 			 */
-			Location[] locationArray = { home, car, outpost, border, endLocation };
+			Location[] locationArray = { home, car, outpost,patrolEncounter, border, endLocation };
 
 			int position = 0;
 			/*

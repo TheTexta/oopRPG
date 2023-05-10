@@ -12,10 +12,6 @@ public class Enemy extends Character implements Killable {
 		this.weapon = weapon;
 	}
 
-	String yell(String msg) {
-		return (this.getName() + " yells: " + msg);
-	}
-
 	public void attack(Character attacked) {
 		
 		attacked.setHealth(attacked.getHealth() - ((int) (Math.random() * (this.weapon.getDamage() * 0.5))
