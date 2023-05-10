@@ -30,10 +30,10 @@ public class Main {
 			Scanner in = new Scanner(System.in);
 
 			// Weapons
-			Equip shank = new Equip("Shank", 25, true);
-			Equip g19 = new Equip("Glock 19", 50, true);
-			Equip mp5 = new Equip("MP5", 100, true);
-			Equip ak = new Equip("AK-47", 200, true);
+			Equip shank = new Equip("Shank", 25, true, "A rusty old knife - 25ATK");
+			Equip g19 = new Equip("Glock 19", 50, true, "A shiny new handgun - 50ATK");
+			Equip mp5 = new Equip("MP5", 100, true, "A lightweight high power weapon - 100ATK");
+			Equip ak = new Equip("AK-47", 200, true, "Unstoppable force of power - 200ATK");
 
 			// Food
 			Destructible apple = new Food("Apple", 15,4, "a juicy apple" );
@@ -93,8 +93,8 @@ public class Main {
 			Police swat2 = new Police(200, "Special Forces Agent:" + names[((int) Math.random() * 19) + 1], true,
 					swatKit,
 					mp5);
-			Criminal testBadGuy = new Criminal(50, "David", true, swatKit, shank);
-			Criminal op = new Criminal(100, "Enemy Gang Member:" + names[((int) Math.random() * 19) + 1], true, gangKit,
+			
+			Criminal op = new Criminal(100, "Enemy Gang Member: " + names[((int) Math.random() * 19) + 1], true, gangKit,
 					g19);
 
 			Criminal outpostBoss = new Criminal(200, "Kristopher Churchill", true, new ArrayList<>() {
@@ -103,9 +103,7 @@ public class Main {
 				}
 			}, ak);
 
-			// Empty Inventory to set to looted characters
-			ArrayList<Item> empty = new ArrayList<>();
-
+			// Locations
 			Location home = new Location("Home", new ArrayList<>() {
 				{
 					add(g19);
@@ -114,7 +112,7 @@ public class Main {
 				}
 			}, 5,
 					"You walk downstairs and grab your keys as you head to your car");
-			home.addCharacter(testBadGuy);
+			
 
 			Location car = new Location("Car",new ArrayList<>() {
 				{
@@ -172,7 +170,7 @@ public class Main {
 			if (validChoice("y", "n").equals("y")) {
 				PrintMethods.printLoading();
 				PrintMethods.delayPrint(
-						"You have to flee the country!\nEvery action the police get closer to you\nIf you run out of actions they will find you\nBut you can escape!\nEvery time you change locations you throw them off\nGaining you valuable actions to use in as you run\n");
+						"You have to flee the country!\nEvery action the police get closer to you\nIf you run out of actions they will find you and try to kill you\n\nEvery time you change locations you throw them off\nGaining you valuable actions to use in as you run\n\nUse fight to attack enemies at your location\nUse Move to go to the next location\nOpen your inventory to use and equip items you have picked up\nLoot a location to loot items you found at the location and any dead bodies\nYou can Search a location for hidden items which you can later pickup by Looting them");
 			}
 			System.out.println();
 
@@ -310,7 +308,6 @@ public class Main {
 							// Let the player choose which item they want to interact with
 							choice = validChoice(0, inventory.size());
 							if (0 < choice) {
-								// TODO account for food items
 								String equipUse;
 								// If the chosen item is an equipable item, set the equipUse variable to "Equip"
 								// Otherwise, set it to "Use"
@@ -318,9 +315,6 @@ public class Main {
 									equipUse = "Equip";
 								else
 									equipUse = "Use";
-
-
-								if (inventory.get(choice - 1).getClass().equals(Food.class))
 								// Print the item name and the options to equip or use the item, or go back
 								PrintMethods.printArray(new String[] { inventory.get(choice - 1).getName(),
 										inventory.get(choice - 1).getDescription(), "1. " + equipUse });

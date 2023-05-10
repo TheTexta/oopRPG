@@ -73,9 +73,9 @@ public class Location {
 		this.isSearched = true;
 		for (int i = 0; i < hiddenInventory.size(); i++) {
 			if (i == 0)
-				addedItems += hiddenInventory.get(i);
+				addedItems += hiddenInventory.get(i).getName();
 			else
-				addedItems += ", " + hiddenInventory.get(i);
+				addedItems += ", " + hiddenInventory.get(i).getName();
 		}
 		if (this.hiddenInventory.isEmpty()) {
 
