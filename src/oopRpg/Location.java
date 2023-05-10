@@ -159,7 +159,7 @@ public class Location {
 		if (!inBetweenLoc){
 			toPrint[0][1] = "2. Move";
 		}
-		PrintMethods.printArray(toPrint, 16);
+		PrintMethods.print2dArray(toPrint, 16);
 
 		// get all possible actions
 		// list them
@@ -219,7 +219,7 @@ public class Location {
 		}
 
 		// TODO ask if 84 needs to be a variable
-		PrintMethods.printArray(toPrint, 84);
+		PrintMethods.print2dArray(toPrint, 84);
 
 	}
 

@@ -232,7 +232,7 @@ public final class PrintMethods {
 	// - padding: the amount of padding to add to each cell in the table
 	// Throws:
 	// - an Exception with the message "txt is null" if txt is an empty array
-	public static void printArray(String[][] txt, int padding) throws Exception {
+	public static void print2dArray(String[][] txt, int padding) throws Exception {
 		if (txt.length == 0)
 			throw new Exception("txt is null");
 
@@ -255,6 +255,18 @@ public final class PrintMethods {
 		delayPrint(toPrint.split("\n"), 30);
 	}
 
+	// Takes a string array and prints with the print2darray method as if every line
+	// is in the array is its own array so that the print2darray method prints the
+	// txt with a new line for each line in the strin array
+	public static void printArray(String[] txt) throws Exception {
+		String[][] toPrint = new String[txt.length][1];
+		for (int i = 0; i < txt.length; i++) {
+			toPrint[i][0] = txt[i];
+		}
+		print2dArray(toPrint, consoleWidth-6);
+
+	}
+
 	// This method prints an ArrayList of Item objects as a formatted table.
 	// Parameters:
 	// - toPrint: the ArrayList of Item objects to print
@@ -268,13 +280,13 @@ public final class PrintMethods {
 		}
 
 		// Call printArray method to print the converted array as a table
-		printArray(toPrintArray, 84);
+		print2dArray(toPrintArray, 84);
 	}
 
 	// Takes a string and prints it with borders uding the printArray method
 	public static void printWrapped(String toPrint) throws Exception {
 		String[][] print = { { toPrint } };
-		printArray(print, consoleWidth - 6);
+		print2dArray(print, consoleWidth - 6);
 	}
 
 	// Prints a large version of 0.5x, 1.0x, or 2.0x
@@ -286,7 +298,7 @@ public final class PrintMethods {
 	public static void printMulti(double multi) throws Exception {
 		if (multi == 2) {
 			// Print the animation for 2.0x damage multiplier
-			printArray(new String[][] { { " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg " },
+			print2dArray(new String[][] { { " 2)AAA  X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ "2)   AA  X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "    2)    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   2)     X)xx      D)    dd M)  mm  mm G)    gg " },
@@ -294,7 +306,7 @@ public final class PrintMethods {
 					{ "2)AAAAA X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
 		} else if (multi == 1) {
 			// Print the animation for 1.0x damage multiplier
-			printArray(new String[][] { { "  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg " },
+			print2dArray(new String[][] { { "  1)!   X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ " 1)!!    X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "   1)     X)xx      D)    dd M)  mm  mm G)    gg " },
@@ -302,7 +314,7 @@ public final class PrintMethods {
 					{ "1)!!!!! X)    xx    D)ddddd  M)      mm   G)ggg  " } }, consoleWidth - 6);
 		} else if (multi == 0.5) {
 			// Print the animation for 0.5x damage multiplier
-			printArray(new String[][] { { " 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg " },
+			print2dArray(new String[][] { { " 0))))     5)%%%%  X)    xx    D)dddd    M)mm mmm    G)gggg " },
 					{ "0)  )))    5)       X)  xx     D)   dd  M)  mm  mm  G)      " },
 					{ "0) ) ))    5)%%%%    X)xx      D)    dd M)  mm  mm G)  ggg  " },
 					{ "0) ) ))         5)   X)xx      D)    dd M)  mm  mm G)    gg " },
