@@ -19,10 +19,10 @@ public class Destructible extends Item {
 	 * less, the breakItem method is called to generate a message that the item has
 	 * broken.
 	 */
-	public void use() {
+	public void use(Character user) throws Exception {
 		if (this.durability > 0) {
 			// Call the use method in the superclass to generate the standard message.
-			super.use();
+			super.use(user);
 			// Decrement the durability.
 			this.durability--;
 		}

@@ -10,8 +10,13 @@ public class Food extends Destructible {
         this.healVal = health;
     }
 
-    public void use (Player eater){
+    public void use (Character eater) throws Exception{
+        super.use(eater);
+        int health = eater.getHealth();
         eater.setHealth(eater.getHealth()+this.healVal);
+        health =  eater.getHealth()-health;
+        PrintMethods.printWrapped("You regain "+health + "HP");
+        
     }
 
     

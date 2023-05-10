@@ -337,7 +337,7 @@ public class Main {
 										player.setArmor((Equip) inventory.get(choice - 1));
 								} else if (equipOrBack == 1 && equipUse == "Use") {
 									// If the player chooses to use an item, call the use() method of the item
-									inventory.get(choice - 1).use();
+									inventory.get(choice - 1).use(player);
 								}
 
 							} else if (choice == 0) {

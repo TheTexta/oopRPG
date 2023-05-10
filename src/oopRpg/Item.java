@@ -18,8 +18,8 @@ public class Item {
 	}
 
 	// Method for using an item, which prints a message indicating that the item has been used
-	void use() {
-		System.out.println("Used " + name);
+	void use(Character user) throws Exception {
+		PrintMethods.printWrapped("Used " + name);
 	}
 
 	String getDescription(){
