@@ -144,7 +144,8 @@ public class Main {
 					"You accept the bosses challange. He walks you outside and takes you to: Grangers Alley. 'You kill the pigs down there you get your id.' He walks away leaving you alone with an enemy gang member");
 			outpostAcceptChal.addCharacter(op);
 
-			Location patrolEncounter = new Location ("Highway" ,2, "As you drive to the border, a random cop car apears out of nowhere. They flash there lights at you.. You dont pull over and they pull out the big guns.");
+			Location patrolEncounter = new Location("Highway", 2,
+					"As you drive to the border, a random cop car apears out of nowhere. They flash there lights at you.. You dont pull over and they pull out the big guns.");
 			patrolEncounter.addCharacter(patrol);
 
 			Location border = new Location("Border", 5,
@@ -158,7 +159,7 @@ public class Main {
 			 * that they will encounter them. this makes it easy to move from location to
 			 * location as the player progressses.
 			 */
-			Location[] locationArray = { home, car, outpost,patrolEncounter, border, endLocation };
+			Location[] locationArray = { home, car, outpost, patrolEncounter, border, endLocation };
 
 			int position = 0;
 			/*
@@ -449,31 +450,39 @@ public class Main {
 					// -1 from actions if player chooses to loot/move/pickup
 
 					/*
-					 * Iterates through all attackers on scene and has them do damage accordingly.
-					 * Only does damage if the player hasnt moved that turn. (cant take damage while
-					 * moving)
-					 * Also constructs an array of concatonated strings of names of the characters
-					 * attacking the player. Prints using the printarray method
+					 * Iterates through all attackers on the scene and has them do damage
+					 * accordingly.
+					 * Only does damage if the player hasn't moved that turn (can't take damage
+					 * while moving).
+					 * Also constructs an array of concatenated strings of names of the characters
+					 * attacking the player.
+					 * Prints using the printArray method.
 					 */
-
 					if (!move) {
 						if (locationArray[position].getAttackables(true).size() > 0) {
-							PrintMethods.printLoading();
+							PrintMethods.printLoading(); // Print loading message
+
+							// Create an array to store the names of characters attacking the player
 							String[] charsAttacking = new String[locationArray[position].getAttackables(true).size()
 									+ 2];
-							int damageTaken = player.getHealth();
+
+							int damageTaken = player.getHealth(); // Get the current health of the player
+
+							// Iterate through the attackable characters and perform attacks
 							for (int i = 0; i < locationArray[position].getAttackables(true).size(); i++) {
 								charsAttacking[i] = locationArray[position].getAttackables(true).get(i).getName()
 										+ " attacks you!";
-								locationArray[position].getAttackables(true).get(i).attack(player);
+								locationArray[position].getAttackables(true).get(i).attack(player); // Perform the
+																									// attack
 							}
-							damageTaken -= player.getHealth();
+
+							damageTaken -= player.getHealth(); // Calculate the damage taken by the player
 							charsAttacking[charsAttacking.length - 2] = PrintMethods.genString(PrintMethods.getOffset(),
 									"-");
 							charsAttacking[charsAttacking.length - 1] = "You take " + damageTaken + " dmg";
-							PrintMethods.printArray(charsAttacking);
-						}
 
+							PrintMethods.printArray(charsAttacking); // Print the array of attack messages
+						}
 					}
 
 				}
