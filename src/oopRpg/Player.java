@@ -136,9 +136,6 @@ public class Player extends Character implements Killable {
 	// Method to return the player's current action multiplier
 	public int actionMultiplier() {
 		return this.wantedLvl;
-		// TODO implement a system where wanted level increases
-		// after killing a cop or citizen
-		// If wanted lvl too high you get recognized at the border
 	}
 
 	// Getter method for the player's equipped weapon
