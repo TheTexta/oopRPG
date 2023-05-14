@@ -137,14 +137,14 @@ public class Main {
 			Location outpost = new Location("Outpost", 1, "");
 
 			// Outpost subLocations
-			Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
+			Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight Churchill");
 
 			outpostDeclineChal.addCharacter(outpostBoss);
 			Location outpostAcceptChal = new Location("Alleyway", 5,
-					"You accept the bosses challange. He walks you outside and takes you to: Grangers Alley. 'You kill the pigs down there you get your id.' He walks away leaving you alone with the enemy");
+					"You accept the bosses challange. He walks you outside and takes you to: Grangers Alley. 'You kill the pigs down there you get your id.' He walks away leaving you alone with an enemy gang member");
 			outpostAcceptChal.addCharacter(op);
 
-			Location patrolEncounter = new Location ("Highway" ,2, "As you drive to the border, a random cop car apears out of nowhere. They flash there lights at you and after you dont pull over they pull out the big guns...");
+			Location patrolEncounter = new Location ("Highway" ,2, "As you drive to the border, a random cop car apears out of nowhere. They flash there lights at you.. You dont pull over and they pull out the big guns.");
 			patrolEncounter.addCharacter(patrol);
 
 			Location border = new Location("Border", 5,
@@ -298,7 +298,7 @@ public class Main {
 								PrintMethods.print2dArray(toPrint, 16);
 								PrintMethods.printLoading();
 								PrintMethods.delayPrint(
-										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'Theres only 1 way your getting out of here alive.'\n'You either agree to my challange or you get yourself more into more trouble then even right now'\n\nDo you accept the challange (y or n): ");
+										"Walking into the classic crackhouse escape, you spot the man himself. \nKristopher Churchill stands before you. You turn around, no fake ID is worth \ntrying to reason with this man. The second you turn around the door slams shut. \n'Where do you think your going?' Churchill growls, 'The only way your getting out of here alive is if you help me'\n'You either agree to aid me in capturing some enemy gang territory or ill kill you where you stand right now'\n\nDo you accept the challange (y or n): ");
 								if (validChoice("y", "n").equals("y")) {
 									locationArray[position] = outpostAcceptChal;
 								} else {
