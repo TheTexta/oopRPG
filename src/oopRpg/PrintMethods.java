@@ -274,7 +274,7 @@ public final class PrintMethods {
 
 	}
 
-	// Sepperates Text at given interval
+	// Sepperates text at given interval
 	public static String[] genSepperatedString(String msg, int interval) {
 		int numOfLine = msg.length() / interval;
 		if (msg.length() % interval > 0)

@@ -134,10 +134,9 @@ public class Main {
 				}
 
 			}, 3, "You get into your car");
-			Location outpost = new Location("Outpost", 1,
-					"Finally arriving at the runned down out of business 711,\n you call the contact your lawyer gave you. \n'Hello?'\n'I want out'\n'I need you to kill some pigs for me first'\n ");
+			Location outpost = new Location("Outpost", 1, "");
 
-			// outpost subLocations
+			// Outpost subLocations
 			Location outpostDeclineChal = new Location("Outpost", 5, "You prepare to fight the boss");
 
 			outpostDeclineChal.addCharacter(outpostBoss);
@@ -173,7 +172,7 @@ public class Main {
 
 			PrintMethods.printLoading();
 			PrintMethods.delayPrint(
-					"You jolt awake to the sound of your phone buzzing on the nightstand,\nand as you groggily answer it, your worst fears are confirmed: \nthe police are on their way, and you've got to get out of the country, fast.\n\nYou have to go to the criminal OUTPOST to collect a fakeid to cross the BORDER\n\nYou have to be careful though. If you attract to much attention you might be spotted at teh border");
+					"You jolt awake to the sound of your phone buzzing on the nightstand,\nand as you groggily answer it, your worst fears are confirmed: \nthe police are on their way, and you've got to get out of the country, fast.\n\nYou have to go to the criminal OUTPOST to collect a fakeid to cross the BORDER\n\nYou have to be careful though. If you attract to much attention you might be spotted at the BORDER\n");
 			PrintMethods.printLoading();
 
 			PrintMethods.delayPrint("\nWould you like to see the tutorial? (y or n): ");
@@ -181,7 +180,7 @@ public class Main {
 			if (validChoice("y", "n").equals("y")) {
 				PrintMethods.printLoading();
 				PrintMethods.delayPrint(
-						"You have to flee the country!\nEvery action the police get closer to you\nIf you run out of actions they will find you and try to kill you\n\nEvery time you change locations you throw them off\nGaining you valuable actions to use in as you run\n\nUse fight to attack enemies at your location\nUse Move to go to the next location\nOpen your inventory to use and equip items you have picked up\nLoot a location to loot items you found at the location and any dead bodies\nYou can Search a location for hidden items which you can later pickup by Looting them");
+						"You have to flee the country!\nEvery action the police get closer to you\nIf you run out of actions they will find you and try to kill you\n\nEvery time you change locations you throw them off\nGaining you valuable actions to use in as you run\n\nUse FIGHT to attack enemies at your location\nUse MOVE to go to the next location\nOpen your INVENTORY to use and equip items you have picked up\nLOOT a location to pickup items you found at the location and any dead bodies\nYou can SEARCH a location for hidden items which you can later pickup with the LOOT function");
 			}
 			System.out.println();
 
@@ -478,6 +477,7 @@ public class Main {
 					}
 
 				}
+				// Check if player is dead
 				if (player.isDead()) {
 					gameOver = true;
 				}

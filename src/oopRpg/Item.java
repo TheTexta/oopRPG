@@ -1,5 +1,6 @@
 package oopRpg;
 
+
 public class Item implements Useables {
 	// Declare the name field as private so it can only be accessed within the Item class
 	private String name;
